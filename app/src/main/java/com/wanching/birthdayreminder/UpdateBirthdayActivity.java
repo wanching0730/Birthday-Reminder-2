@@ -2,15 +2,12 @@ package com.wanching.birthdayreminder;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -74,9 +71,9 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String date = etDate.getText().toString();
 
-                try{
+                try {
                     formattedDate = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).parse(date);
-                }catch (ParseException ex){
+                } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
 
@@ -96,13 +93,13 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(resultCode == RESULT_OK){
-            if(requestCode == SELECT_IMAGE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
                 bitmap = null;
-                if(intent != null){
-                    try{
+                if (intent != null) {
+                    try {
                         bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), intent.getData());
-                    }catch (IOException ex){
+                    } catch (IOException ex) {
                         Log.wtf("Ioexception", ex);
                     }
                 }
@@ -112,8 +109,8 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         }
     }
 
-    public void SetDate(View view){
+    public void SetDate(View view) {
         DialogFragment fragment = new DatePickerFragment();
         fragment.show(getSupportFragmentManager(), "datePicker");
     }
-
+}
