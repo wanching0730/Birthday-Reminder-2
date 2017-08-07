@@ -4,24 +4,34 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.text.format.DateFormat;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class BirthdayCursorAdapter extends CursorAdapter {
+public class BirthdayCursorAdapter extends CursorAdapter{
+
+    private List<String> items;
 
     private LayoutInflater inflater;
     private Person person;
 
-    public BirthdayCursorAdapter(Context context, Cursor cursor, int flags){
+
+    public BirthdayCursorAdapter(Context context, Cursor cursor, int flags, List<String>items){
         super(context, cursor, flags);
+
+        this.items = items;
+
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -48,8 +58,6 @@ public class BirthdayCursorAdapter extends CursorAdapter {
         Person.Countdown countdown = person.getCountdown();
 
         TextView tvName = view.findViewById(R.id.name);
-        TextView tvEmail =  view.findViewById(R.id.email);
-        TextView tvPhone = view.findViewById(R.id.phone);
         TextView tvMonth = view.findViewById(R.id.month);
         TextView tvDay = view.findViewById(R.id.day);
         TextView tvCountdown = view.findViewById(R.id.countdown);
@@ -59,8 +67,6 @@ public class BirthdayCursorAdapter extends CursorAdapter {
         int newAge = Integer.parseInt(Long.toString(countdown.getDays()))/365;
 
         tvName.setText(name);
-        tvEmail.setText(email);
-        tvPhone.setText(phone);
         tvMonth.setText(DateFormat.format("MMM", formattedDate));
         tvDay.setText(DateFormat.format("dd", formattedDate));
         ivImage.setImageBitmap(imageBitmap);

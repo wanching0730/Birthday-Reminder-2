@@ -18,20 +18,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable">
+            </meta-data>
         </activity>
         <activity
             android:name=".UpdateBirthdayActivity"
             android:label="@string/title_activity_update_birthday"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".UpcomingBirthday"
-            android:label="@string/title_activity_upcoming_birthday"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ViewBirthdayActivity" />
-        <activity
-            android:name=".AllBirthdayActivity"
-            android:label="@string/title_activity_all_birthday"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddBirthdayActivity"
             android:label="@string/title_activity_add_birthday"
