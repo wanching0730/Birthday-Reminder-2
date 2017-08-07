@@ -26,7 +26,7 @@ public class AllBirthdayActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_birthday, container, false);
 
-        listView = rootView.findViewById(R.id.all_list_view);
+        listView = rootView.findViewById(R.id.list_view);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -28,7 +30,7 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_upcoming_birthday, container, false);
 
-        listView = rootView.findViewById(R.id.upcoming_list_view);
+        listView = rootView.findViewById(R.id.list_view);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -60,7 +62,11 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         Cursor cursor = dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
 
-        BirthdayCursorAdapter adapter = new BirthdayCursorAdapter(getContext(), cursor,0);
+        TextView tv = getActivity().findViewById(R.id.example);
+        listView.setEmptyView(tv);
+
+        BirthdayCursorAdapter adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         listView.setAdapter(adapter);
+
     }
 }
