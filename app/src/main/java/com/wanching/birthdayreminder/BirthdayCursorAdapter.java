@@ -21,16 +21,12 @@ import java.util.List;
 
 public class BirthdayCursorAdapter extends CursorAdapter{
 
-    private List<String> items;
-
     private LayoutInflater inflater;
     private Person person;
 
 
-    public BirthdayCursorAdapter(Context context, Cursor cursor, int flags, List<String>items){
+    public BirthdayCursorAdapter(Context context, Cursor cursor, int flags){
         super(context, cursor, flags);
-
-        this.items = items;
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

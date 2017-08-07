@@ -52,28 +52,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView sv =  (SearchView) menu.findItem(R.id.search).getActionView();
-
-        sv.setSearchableInfo(searchManager. getSearchableInfo(getComponentName()));
-        sv.setSubmitButtonEnabled(true);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
-                new BirthdayCursorAdapter(this, dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC"), 0).getFilter().filter(newText);
-
-                return true;
-            }
-        });
-
         return true;
     }
 

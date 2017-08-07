@@ -31,7 +31,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
     private EditText etPhone;
     private EditText etDate;
     private Date newDate;
-    private sImageView ivImage;
+    private ImageView ivImage;
     private Bitmap bitmap = null;
     private boolean saved = false;
     private Conversion conversion;
@@ -65,8 +65,8 @@ public class AddBirthdayActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
