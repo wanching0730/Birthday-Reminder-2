@@ -23,8 +23,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<String>
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
