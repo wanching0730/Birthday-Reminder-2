@@ -1,8 +1,6 @@
 package com.wanching.birthdayreminder;
 
 import android.app.FragmentManager;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,18 +9,14 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,10 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.search, R.string.drawer_open, R.string.drawer_close){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.hamburger, R.string.drawer_open, R.string.drawer_close){
 
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -86,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.hamburger);
 
         if(savedInstanceState == null){
             SelectItem(0);
@@ -111,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -154,20 +148,24 @@ public class MainActivity extends AppCompatActivity {
 
         switch (pos) {
             case 0:
-                fragment = new SettingFragment();
-                args.putString(SettingFragment.ITEM_NAME, dataList.get(pos)
-                        .getItemName());
-                args.putInt(SettingFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
-                        .getImgResID());
-                Log.v("MainActivity", "fragment shown");
+//                fragment = new SettingFragment();
+//                args.putString(SettingFragment.ITEM_NAME, dataList.get(pos)
+//                        .getItemName());
+//                args.putInt(SettingFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
+//                        .getImgResID());
+//                Log.v("MainActivity", "fragment shown");
+                Toast.makeText(this, "Halo", Toast.LENGTH_SHORT).show();
                 break;
             case 1:
-                fragment = new AddWishesFragment();
-                args.putString(AddWishesFragment.ITEM_NAME, dataList.get(pos)
-                        .getItemName());
-                args.putInt(AddWishesFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
-                        .getImgResID());
-                Log.v("MainActivity", "fragment shown");
+//                fragment = new AddWishesFragment();
+//                args.putString(AddWishesFragment.ITEM_NAME, dataList.get(pos)
+//                        .getItemName());
+//                args.putInt(AddWishesFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
+//                        .getImgResID());
+//                Log.v("MainActivity", "fragment shown");
+                Intent intent1 = new Intent(MainActivity.this, AddBirthdayActivity.class);
+                if(intent1.resolveActivity(getPackageManager()) != null)
+                    startActivity(intent1);
                 break;
             case 2:
                 fragment = new AddWishesFragment();
@@ -175,14 +173,18 @@ public class MainActivity extends AppCompatActivity {
                         .getItemName());
                 args.putInt(AddWishesFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
                         .getImgResID());
+
+                fragment.setArguments(args);
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             default:
                 break;
         }
 
-        fragment.setArguments(args);
-        FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//        fragment.setArguments(args);
+//        FragmentManager fm = getFragmentManager();
+//        fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         mDrawerList.setItemChecked(pos, true);
         setTitle(dataList.get(pos).getItemName());
