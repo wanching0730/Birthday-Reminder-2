@@ -15,4 +15,6 @@
     <string name="title_activity_upcoming_birthday">UpcomingBirthday</string>
     <string name="title_activity_all_birthday">AllBirthdayActivity</string>
     <string name="title_activity_add_birthday">AddBirthdayActivity</string>
+    <string name="drawer_open">Open drawer</string>
+    <string name="drawer_close">Close drawer</string>
 </resources>
