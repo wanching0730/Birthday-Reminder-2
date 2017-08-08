@@ -22,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataList.add(new DrawerItem("Message", R.drawable.cake));
         dataList.add(new DrawerItem("Delete", R.drawable.cake));
-        dataList.add(new DrawerItem("Delete", R.drawable.cake));
+        dataList.add(new DrawerItem("Show", R.drawable.cake));
 
         adapter = new CustomDrawerAdapter(this, R.layout.custom_drawer_layout, dataList);
         mDrawerList.setAdapter(adapter);
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         .getItemName());
                 args.putInt(SettingFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
                         .getImgResID());
+                Log.v("MainActivity", "fragment shown");
                 break;
             case 1:
                 fragment = new AddWishesFragment();
@@ -165,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         .getItemName());
                 args.putInt(AddWishesFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
                         .getImgResID());
+                Log.v("MainActivity", "fragment shown");
                 break;
             case 2:
                 fragment = new AddWishesFragment();
