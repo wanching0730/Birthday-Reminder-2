@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,11 +63,20 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         Cursor cursor = dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
 
-        TextView tv = getActivity().findViewById(R.id.example);
-        listView.setEmptyView(tv);
-
         BirthdayCursorAdapter adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         listView.setAdapter(adapter);
 
+        TextView tv = getActivity().findViewById(R.id.example);
+        listView.setEmptyView(tv);
+
     }
+
+//    @Override
+//    public void setUserVisibleHint(boolean isVisibleToUser) {
+//        super.setUserVisibleHint(isVisibleToUser);
+//
+//        if(isVisibleToUser){
+//            onResume();
+//        }
+//    }
 }
