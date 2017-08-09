@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -148,35 +149,23 @@ public class MainActivity extends AppCompatActivity {
 
         switch (pos) {
             case 0:
-//                fragment = new SettingFragment();
-//                args.putString(SettingFragment.ITEM_NAME, dataList.get(pos)
-//                        .getItemName());
-//                args.putInt(SettingFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
-//                        .getImgResID());
-//                Log.v("MainActivity", "fragment shown");
-                Toast.makeText(this, "Halo", Toast.LENGTH_SHORT).show();
-                break;
-            case 1:
-//                fragment = new AddWishesFragment();
-//                args.putString(AddWishesFragment.ITEM_NAME, dataList.get(pos)
-//                        .getItemName());
-//                args.putInt(AddWishesFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
-//                        .getImgResID());
-//                Log.v("MainActivity", "fragment shown");
-                Intent intent1 = new Intent(MainActivity.this, AddBirthdayActivity.class);
-                if(intent1.resolveActivity(getPackageManager()) != null)
-                    startActivity(intent1);
-                break;
-            case 2:
                 fragment = new AddWishesFragment();
                 args.putString(AddWishesFragment.ITEM_NAME, dataList.get(pos)
                         .getItemName());
                 args.putInt(AddWishesFragment.IMAGE_RESOURCE_ID, dataList.get(pos)
                         .getImgResID());
-
                 fragment.setArguments(args);
                 FragmentManager fm = getFragmentManager();
                 fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                Log.v("MainActivity", "fragment shown");
+                break;
+            case 1:
+                Toast.makeText(this, "Halo", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                Intent intent1 = new Intent(MainActivity.this, AddBirthdayActivity.class);
+                if(intent1.resolveActivity(getPackageManager()) != null)
+                    startActivity(intent1);
                 break;
             default:
                 break;
