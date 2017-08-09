@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/inbox"
+            android:checked="false"
+            android:icon="@android:drawable/ic_menu_save"
+            android:title="SAVE" />
+
+        <item
+            android:id="@+id/starred"
+            android:checked="false"
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="DELETE" />
+
+        <item
+            android:id="@+id/sent_mail"
+            android:checked="false"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="ADD" />
+
+        <item
+            android:id="@+id/drafts"
+            android:checked="false"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="EDIT" />
+
+    </group>
+
+</menu>
