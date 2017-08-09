@@ -15,4 +15,9 @@
     <string name="title_activity_upcoming_birthday">UpcomingBirthday</string>
     <string name="title_activity_all_birthday">AllBirthdayActivity</string>
     <string name="title_activity_add_birthday">AddBirthdayActivity</string>
+    <string name="open_drawer">Drawer opened</string>
+    <string name="close_drawer">Drawer closed</string>
+    <string name="profile_name">WC</string>
+    <string name="user_name">WanChing Teoh</string>
+    <string name="account_email">wanching_97@hotmail.com</string>
 </resources>
