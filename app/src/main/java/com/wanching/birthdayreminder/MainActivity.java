@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(item.getItemId() == R.id.sent_mail){
-                    fm = getSupportFragmentManager();
-                    ft = fm.beginTransaction();
-                    ft.replace(R.id.frame_container, new NewFragment()).commit();
+//                    fm = getSupportFragmentManager();
+//                    ft = fm.beginTransaction();
+//                    ft.replace(R.id.frame_container, new NewFragment()).commit();
 
                 }
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       // getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

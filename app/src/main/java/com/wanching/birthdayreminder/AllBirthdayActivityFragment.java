@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_birthday, container, false);
 
@@ -62,11 +63,15 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         listView.setEmptyView(tvEmpty);
         tvEmpty.setText("No Birthday Record Found!");
 
+
         //to display the menu in fragment
         setHasOptionsMenu(true);
 
+
         return  rootView;
     }
+
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -80,6 +85,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         adapter = new BirthdayCursorAdapter(getContext(), null, 0);
         listView.setAdapter(adapter);
         getLoaderManager().restartLoader(LOADER_ID, null, this);
+        Log.v("fragment", "inflate");
     }
 
     @Override
@@ -93,7 +99,13 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
+    }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.clear();
+        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
     }
 
     @Override
