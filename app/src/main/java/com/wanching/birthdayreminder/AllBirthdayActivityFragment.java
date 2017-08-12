@@ -91,6 +91,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
         inflater.inflate(R.menu.search_menu, menu);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
@@ -101,12 +102,12 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         searchView.setOnCloseListener(this);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.clear();
-        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
-    }
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//        menu.clear();
+//        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
+//    }
 
     @Override
     public boolean onClose() {
