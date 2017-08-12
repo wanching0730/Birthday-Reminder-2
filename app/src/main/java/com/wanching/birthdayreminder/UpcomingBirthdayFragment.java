@@ -66,7 +66,7 @@ public class UpcomingBirthdayFragment extends Fragment {
         BirthdayCursorAdapter adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         listView.setAdapter(adapter);
 
-        TextView tv = getActivity().findViewById(R.id.example);
+        TextView tv = getActivity().findViewById(R.id.empty_view);
         listView.setEmptyView(tv);
 
     }

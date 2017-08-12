@@ -17,7 +17,7 @@
        android:textSize="28sp"
        android:textStyle="bold"
        android:layout_centerVertical="true"
-       android:layout_alignEnd="@+id/email" />
+       android:layout_alignEnd="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
@@ -34,7 +34,7 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/email_address"
+        android:text="@string/account_email"
         android:paddingLeft="8sp"
         android:paddingTop="4sp"
         android:paddingBottom="4sp"

@@ -15,10 +15,4 @@
         android:title="@string/action_refresh"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/search"
-        android:title="Search"
-        android:icon="@drawable/search"
-        app:showAsAction="collapseActionView|ifRoom"
-        android:actionViewClass="android.widget.SearchView" />
 </menu>
