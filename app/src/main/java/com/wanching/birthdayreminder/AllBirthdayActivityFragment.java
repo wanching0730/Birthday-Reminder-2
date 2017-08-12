@@ -71,8 +71,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         return  rootView;
     }
 
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -84,8 +82,8 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
         adapter = new BirthdayCursorAdapter(getContext(), null, 0);
         listView.setAdapter(adapter);
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
-        Log.v("fragment", "inflate");
+        getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
+        Log.v("onresume", "restart loader");
     }
 
     @Override
@@ -112,7 +110,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     @Override
     public boolean onClose() {
         subString = null;
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
         return true;
 
     }
@@ -126,7 +124,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     public boolean onQueryTextChange(String newText) {
         if(!TextUtils.isEmpty(newText)){
             subString = newText;
-            getLoaderManager().restartLoader(LOADER_ID, null, this);
+            getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
         }
 
         return true;
@@ -134,11 +132,13 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.v("oncreateoader", "create loader");
         return new DbLoader(getActivity(), subString);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.v("onloadfinish", "swipecursor");
         adapter.swapCursor(data);
         tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
@@ -160,6 +160,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
             this.context = context;
             this.substring = substring;
+            Log.v("dbloader", "dblaoder constructed");
         }
 
         @Override
@@ -176,9 +177,12 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                     BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE,
                     BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY};
 
+
+
             if(substring != null){
                 String[] selectionArgs = {"%" + substring + "%"};
                 cursor = dbq.read(columns, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " LIKE ?", selectionArgs, null, null, null);
+                Log.v("loading", "loading");
             }else{
                 cursor = dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
             }
