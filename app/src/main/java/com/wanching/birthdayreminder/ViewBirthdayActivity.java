@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,35 +72,66 @@ public class ViewBirthdayActivity extends AppCompatActivity {
             TextView tvEmail = (TextView) findViewById(R.id.show_email);
             TextView tvPhone = (TextView) findViewById(R.id.show_phone);
             TextView tvDate = (TextView) findViewById(R.id.date);
-            TextView tvDay = (TextView) findViewById(R.id.day);
-            TextView tvHour = (TextView) findViewById(R.id.hour);
-            TextView tvMinute = (TextView) findViewById(R.id.minute);
-            TextView tvSecond = (TextView) findViewById(R.id.second);
             TextView tvLeft = (TextView) findViewById(R.id.left);
-
-            Person.Countdown countdown = person.getCountdown();
-            final Calendar todayDate = Calendar.getInstance();
-            final Calendar thisYearBirthday = Calendar.getInstance();
-            thisYearBirthday.set(todayDate.get(Calendar.YEAR), person.getDateAsCalendar().get(Calendar.MONTH), person.getDateAsCalendar().get(Calendar.DAY_OF_MONTH));
 
             tvEmail.setText("Email: " + person.getEmail());
             tvPhone.setText("Phone: " + person.getPhone());
-            tvDate.setText("Bithday: " + new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(thisYearBirthday.getTime()));
-            tvDay.setText(Long.toString(countdown.getDays()));
-            tvHour.setText(Long.toString(countdown.getHours()));
-            tvMinute.setText(Long.toString(countdown.getMinutes()));
-            tvSecond.setText(Long.toString(countdown.getSeconds()));
+            tvLeft.setText("Left");
 
-            if(Calendar.getInstance().get(Calendar.MONTH) < person.getDateAsCalendar().get(Calendar.MONTH))
-                tvLeft.setText("Left");
-            else
-                tvLeft.setText("Ago");
+            Calendar today = Calendar.getInstance();
+            Calendar annualBirthday = person.getThisYearBirthday();
+            Calendar nextBirthday = person.getNextYearBirthday();
+            if(today.get(Calendar.MONTH) < annualBirthday.get(Calendar.MONTH) || (today.get(Calendar.MONTH) == annualBirthday.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < annualBirthday.get(Calendar.DAY_OF_MONTH))){
+                tvDate.setText("Birthday: " + new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(person.getThisYearBirthday().getTime()));
+                CountDownTimer timer = new CountDownTimer(annualBirthday.getTimeInMillis(), 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        onTickCalculation(millisUntilFinished);
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+                }.start();
+            }else {
+                tvDate.setText("Next Birthday: " + new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(person.getNextYearBirthday().getTime()));
+                CountDownTimer timer = new CountDownTimer(nextBirthday.getTimeInMillis(), 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        onTickCalculation(millisUntilFinished);
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+                }.start();
+            }
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         }else{
             Log.e("id not found", Long.toString(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID))));
             finish();
         }
+    }
+
+    public void onTickCalculation(long millisUntilFinished){
+
+        TextView tvDay = (TextView) findViewById(R.id.day);
+        TextView tvHour = (TextView) findViewById(R.id.hour);
+        TextView tvMinute = (TextView) findViewById(R.id.minute);
+        TextView tvSecond = (TextView) findViewById(R.id.second);
+
+        long startTime = System.currentTimeMillis();
+        startTime = startTime - 1;
+        long serverUptimeSeconds = (millisUntilFinished - startTime) / 1000;
+
+        tvDay.setText(Long.toString(serverUptimeSeconds / 86400));
+        tvHour.setText(Long.toString((serverUptimeSeconds % 86400) / 3600));
+        tvMinute.setText(Long.toString(((serverUptimeSeconds % 86400) % 3600) / 60));
+        tvSecond.setText(Long.toString(((serverUptimeSeconds % 86400) % 3600) % 60));
     }
 
     public boolean changeBoolean(int notify){

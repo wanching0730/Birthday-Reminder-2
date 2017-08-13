@@ -38,7 +38,7 @@ public class BirthdayDbQueries {
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_EMAIL, person.getEmail());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE, person.getPhone());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE, convertToByteArray(person));
-        values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE, person.getDateAsCalendar().getTimeInMillis());
+        values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE, person.getBirthdayAsCalendar().getTimeInMillis());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY, person.isNotify());
 
         long id = db.insert(BirthdayContract.BirthdayEntry.TABLE_NAME, null, values);
@@ -54,7 +54,7 @@ public class BirthdayDbQueries {
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_EMAIL, person.getEmail());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE, person.getPhone());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE, convertToByteArray(person));
-        values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE, person.getDateAsCalendar().getTimeInMillis());
+        values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE, person.getBirthdayAsCalendar().getTimeInMillis());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY, person.isNotify());
 
         String selection = BirthdayContract.BirthdayEntry._ID + " = ?";

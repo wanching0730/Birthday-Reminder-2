@@ -52,7 +52,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         etName.setText(person.getName());
         etEmail.setText(person.getEmail());
         etPhone.setText(person.getPhone());
-        etDate.setText(new SimpleDateFormat("EEEE, MMMM d, yyyy").format(person.getDate()));
+        etDate.setText(new SimpleDateFormat("EEEE, MMMM d, yyyy").format(person.getBirthday()));
         ivImage.setImageBitmap(bitmap);
 
         ivImage.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +80,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
                 person.setName(etName.getText().toString());
                 person.setEmail(etEmail.getText().toString());
                 person.setPhone(etPhone.getText().toString());
-                person.setDate(formattedDate);
+                person.setBirtday(formattedDate);
                 person.setImage(bitmap);
 
                 BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));

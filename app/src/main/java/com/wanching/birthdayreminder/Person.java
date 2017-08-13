@@ -1,6 +1,7 @@
 package com.wanching.birthdayreminder;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -13,20 +14,21 @@ public class Person implements Serializable{
     private String email;
     private String phone;
     private static transient Bitmap image;
-    private Date date;
+    private Date birthday;
+    private Date thisBirthday = null;
     private boolean notify;
 
 //    public Person(long aLong, String string, String cursorString, long cursorLong){
 //        this(0, "", "", Calendar.getInstance(), false);
 //    }
 
-    public Person(long id, String name, String email, String phone, Bitmap image, Date date, boolean notify){
+    public Person(long id, String name, String email, String phone, Bitmap image, Date birthday, boolean notify){
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.image = image;
-        this.date = date;
+        this.birthday = birthday;
         this.notify = notify;
     }
 
@@ -47,11 +49,25 @@ public class Person implements Serializable{
 
     public Bitmap getImage(){return image;}
 
-    public Date getDate(){return date;}
+    public Date getBirthday(){return birthday;}
 
-    public Calendar getDateAsCalendar(){
+    public Calendar getThisYearBirthday(){
+        Calendar thisBirthday = getBirthdayAsCalendar();
+        thisBirthday.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
+
+        return thisBirthday;
+    }
+
+    public Calendar getNextYearBirthday(){
+        Calendar nextBirthday = getBirthdayAsCalendar();
+        nextBirthday.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) + 1);
+
+        return nextBirthday;
+    }
+
+    public Calendar getBirthdayAsCalendar(){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(date.getTime());
+        calendar.setTimeInMillis(birthday.getTime());
         return calendar;
     }
 
@@ -75,13 +91,13 @@ public class Person implements Serializable{
         this.notify = notify;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setBirtday(Date birthday) {
+        this.birthday = birthday;
     }
 
-    public void setDate(Calendar calendar){
+    public void setBirthday(Calendar calendar){
         calendar.set(Calendar.MILLISECOND, 0);
-        this.date = new Date(calendar.getTimeInMillis());
+        this.birthday = new Date(calendar.getTimeInMillis());
     }
 
     public class Countdown {
@@ -100,9 +116,9 @@ public class Person implements Serializable{
 
     public Countdown getCountdown() {
         Calendar today = Calendar.getInstance();
-        today.set(Calendar.MILLISECOND, 0);
+        Calendar birthday = getThisYearBirthday();
 
-        long duration = today.getTimeInMillis() - date.getTime();
+        long duration = birthday.getTimeInMillis() - today.getTimeInMillis();
 
         Countdown countdown = new Countdown();
         countdown.durationInMillis = duration;

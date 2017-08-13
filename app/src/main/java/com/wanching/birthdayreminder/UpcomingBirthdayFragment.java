@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -20,6 +17,7 @@ import android.widget.Toast;
 public class UpcomingBirthdayFragment extends Fragment {
 
     private ListView listView;
+    private BirthdayCursorAdapter adapter;
     public static final String EXTRA_ID_1 = "com.wanching.birthdayreminder.Birthdat.ID1";
 
     public UpcomingBirthdayFragment() {
@@ -61,22 +59,13 @@ public class UpcomingBirthdayFragment extends Fragment {
                 BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE,
                 BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY};
 
-        Cursor cursor = dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
+        Cursor cursor = dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
 
-        BirthdayCursorAdapter adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
+        adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         listView.setAdapter(adapter);
 
         TextView tv = getActivity().findViewById(R.id.empty_view);
         listView.setEmptyView(tv);
 
     }
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//
-//        if(isVisibleToUser){
-//            onResume();
-//        }
-//    }
 }

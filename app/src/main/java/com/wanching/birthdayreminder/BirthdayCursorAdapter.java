@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,19 +61,25 @@ public class BirthdayCursorAdapter extends CursorAdapter{
         TextView tvAge = view.findViewById(R.id.new_age);
         ImageView ivImage = view.findViewById(R.id.image);
 
-        int newAge = Integer.parseInt(Long.toString(countdown.getDays()))/365;
+        Calendar today = Calendar.getInstance();
+        int newAge = today.get(Calendar.YEAR) - person.getBirthdayAsCalendar().get(Calendar.YEAR);
 
         tvName.setText(name);
         tvMonth.setText(DateFormat.format("MMM", formattedDate));
         tvDay.setText(DateFormat.format("dd", formattedDate));
         ivImage.setImageBitmap(imageBitmap);
 
-        if(Calendar.getInstance().get(Calendar.MONTH) < person.getDateAsCalendar().get(Calendar.MONTH)){
-            tvCountdown.setText("Coming\nIn\n" +(Integer.parseInt(Long.toString(countdown.getDays()))-(newAge * 365)) + "\nDays");
+        if(today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) == person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)){
+            tvCountdown.setText("Today");
+            tvAge.setText("Turned " + newAge);
+        }else if(today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)){
+            tvCountdown.setText("Coming\nIn\n" + countdown.getDays() + "\nDays");
             tvAge.setText("Turning " + (newAge+1));
-        }
-        else{
-            tvCountdown.setText((Integer.parseInt(Long.toString(countdown.getDays()))-(newAge * 365)) + "\nDays\nAgo");
+        }else if(today.get(Calendar.MONTH) < person.getBirthdayAsCalendar().get(Calendar.MONTH)){
+            tvCountdown.setText("Coming\nIn\n" + countdown.getDays() + "\nDays");
+            tvAge.setText("Turning " + (newAge+1));
+        }else{
+            tvCountdown.setText(countdown.getDays() + "\nDays\nAgo");
             tvAge.setText("Turned " + newAge);
         }
     }

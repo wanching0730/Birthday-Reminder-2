@@ -100,13 +100,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         searchView.setOnCloseListener(this);
     }
 
-//    @Override
-//    public void onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//        menu.clear();
-//        getActivity().getMenuInflater().inflate(R.menu.search_menu, menu);
-//    }
-
     @Override
     public boolean onClose() {
         subString = null;
@@ -188,8 +181,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             }
             return cursor;
         }
-
-
     }
 }
 
