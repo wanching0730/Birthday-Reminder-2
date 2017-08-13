@@ -78,44 +78,43 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_delete_all) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder .setCancelable(false)
-                    .setMessage("Are you sure you want to delete all records?")
-                    .setPositiveButton("YES",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
-                            dbq.deleteAll();
-                            Toast.makeText(getApplicationContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
-                            onResume();
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.setTitle("WARNING");
-            alert.show();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+    //@Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_delete_all) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//            builder .setCancelable(false)
+//                    .setMessage("Are you sure you want to delete all records?")
+//                    .setPositiveButton("YES",new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
+//                            dbq.deleteAll();
+//                            Toast.makeText(getApplicationContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
+//                            onResume();
+//                        }
+//                    })
+//                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            dialogInterface.cancel();
+//                        }
+//                    });
+//            AlertDialog alert = builder.create();
+//            alert.setTitle("WARNING");
+//            alert.show();
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }

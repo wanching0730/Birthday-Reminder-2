@@ -125,8 +125,8 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         TextView tvSecond = (TextView) findViewById(R.id.second);
 
         long startTime = System.currentTimeMillis();
-        startTime = startTime - 1;
-        long serverUptimeSeconds = (millisUntilFinished - startTime) / 1000;
+        startTime = startTime - 2;
+        long serverUptimeSeconds = (millisUntilFinished - startTime) / 2000;
 
         tvDay.setText(Long.toString(serverUptimeSeconds / 86400));
         tvHour.setText(Long.toString((serverUptimeSeconds % 86400) / 3600));

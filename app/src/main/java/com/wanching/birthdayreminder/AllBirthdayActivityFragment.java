@@ -2,6 +2,7 @@ package com.wanching.birthdayreminder;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -18,11 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -47,7 +51,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_birthday, container, false);
 
-        listView = rootView.findViewById(R.id.list_view);
+        listView = rootView.findViewById(R.id.birthday_list_view);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,7 +71,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         //to display the menu in fragment
         setHasOptionsMenu(true);
 
-
         return  rootView;
     }
 
@@ -83,14 +86,13 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         adapter = new BirthdayCursorAdapter(getContext(), null, 0);
         listView.setAdapter(adapter);
         getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
-        Log.v("onresume", "restart loader");
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.search_menu, menu);
+        inflater.inflate(R.menu.menu_all_birthday, menu);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         if(searchView == null)
@@ -98,6 +100,39 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setOnQueryTextListener(this);
         searchView.setOnCloseListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete_all) {
+           AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder .setCancelable(false)
+                    .setMessage("Are you sure you want to delete all records?")
+                    .setPositiveButton("YES",new DialogInterface.OnClickListener(){
+                        public void onClick(DialogInterface dialog, int which) {
+                            BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
+                            Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+                            dbq.deleteAll();
+                            adapter.swapCursor(cursor);
+                            Toast.makeText(getContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
+                            onResume();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.setTitle("WARNING");
+            alert.show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -125,16 +160,15 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.v("oncreateoader", "create loader");
         return new DbLoader(getActivity(), subString);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.v("onloadfinish", "swipecursor");
         adapter.swapCursor(data);
         tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
+        //onResume();
     }
 
     @Override
@@ -153,7 +187,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
             this.context = context;
             this.substring = substring;
-            Log.v("dbloader", "dblaoder constructed");
         }
 
         @Override
@@ -161,23 +194,12 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(context));
             Cursor cursor;
-            String[] columns = {
-                    BirthdayContract.BirthdayEntry._ID,
-                    BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME,
-                    BirthdayContract.BirthdayEntry.COLUMN_NAME_EMAIL,
-                    BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE,
-                    BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE,
-                    BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE,
-                    BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY};
-
-
 
             if(substring != null){
                 String[] selectionArgs = {"%" + substring + "%"};
-                cursor = dbq.read(columns, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " LIKE ?", selectionArgs, null, null, null);
-                Log.v("loading", "loading");
+                cursor = dbq.read(DbColumns.columns, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " LIKE ?", selectionArgs, null, null, null);
             }else{
-                cursor = dbq.read(columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+                cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
             }
             return cursor;
         }
