@@ -153,6 +153,9 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         if(!TextUtils.isEmpty(newText)){
             subString = newText;
             getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
+        }else{
+            subString = null;
+            getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
         }
 
         return true;
