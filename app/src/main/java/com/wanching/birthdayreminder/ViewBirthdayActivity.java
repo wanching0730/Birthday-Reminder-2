@@ -36,24 +36,14 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         super.onResume();
 
         Intent intent = getIntent();
-        long id = intent.getLongExtra(UpcomingBirthdayFragment.EXTRA_ID_1, 0);
-        long id1 = intent.getLongExtra(AllBirthdayActivityFragment.EXTRA_ID_2, 0);
+        long id = intent.getLongExtra("ID", 0);
 
         BirthdayDbQueries dbq = new BirthdayDbQueries((new BirthdayDbHelper(getApplicationContext())));
-
-        final String[] columns = {
-                BirthdayContract.BirthdayEntry._ID,
-                BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME,
-                BirthdayContract.BirthdayEntry.COLUMN_NAME_EMAIL,
-                BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE,
-                BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE,
-                BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE,
-                BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY};
 
         String selection = BirthdayContract.BirthdayEntry._ID + " = ?";
         String[] selectionArgs = {Long.toString(id)};
 
-        Cursor cursor = dbq.read(columns, selection, selectionArgs, null, null, null);
+        Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, null);
 
         if(cursor.moveToNext()){
             byte[] imageByte = cursor.getBlob(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE));

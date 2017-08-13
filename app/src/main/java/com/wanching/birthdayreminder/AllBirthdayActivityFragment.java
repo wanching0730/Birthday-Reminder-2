@@ -41,7 +41,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     private String subString;
     private BirthdayCursorAdapter adapter;
     private final static int LOADER_ID = 0;
-    public static final String EXTRA_ID_2 = "com.wanching.birthdayreminder.Birthdat.ID2";
+   // public static final String EXTRA_ID_2 = "com.wanching.birthdayreminder.Birthdat.ID2";
 
     public AllBirthdayActivityFragment() {
     }
@@ -59,7 +59,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                 Cursor cursor = (Cursor)adapterView.getItemAtPosition(position);
 
                 Intent intent = new Intent(getContext(), ViewBirthdayActivity.class);
-                intent.putExtra(EXTRA_ID_2, cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)));
+                intent.putExtra("ID", cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)));
                 startActivity(intent);}
         });
 

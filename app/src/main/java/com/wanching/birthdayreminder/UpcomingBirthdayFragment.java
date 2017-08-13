@@ -28,7 +28,7 @@ public class UpcomingBirthdayFragment extends Fragment {
     private ListView listView;
     private BirthdayCursorAdapter adapter;
     private TextView tvEmpty;
-    public static final String EXTRA_ID_1 = "com.wanching.birthdayreminder.Birthdat.ID1";
+   // public static final String EXTRA_ID_1 = "com.wanching.birthdayreminder.Birthdat.ID1";
 
     public UpcomingBirthdayFragment() {
     }
@@ -46,7 +46,7 @@ public class UpcomingBirthdayFragment extends Fragment {
                 Cursor cursor = (Cursor)adapterView.getItemAtPosition(position);
 
                 Intent intent = new Intent(getContext(), ViewBirthdayActivity.class);
-                intent.putExtra(EXTRA_ID_1, cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)));
+                intent.putExtra("ID", cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)));
                 startActivity(intent);}
         });
 
