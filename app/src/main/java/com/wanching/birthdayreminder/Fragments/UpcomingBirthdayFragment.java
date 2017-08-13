@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +17,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wanching.birthdayreminder.BirthdayContract;
+import com.wanching.birthdayreminder.BirthdayCursorAdapter;
+import com.wanching.birthdayreminder.BirthdayDbHelper;
+import com.wanching.birthdayreminder.BirthdayDbQueries;
+import com.wanching.birthdayreminder.DbColumns;
+import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.ViewBirthdayActivity;
 
 import org.w3c.dom.Text;
 
