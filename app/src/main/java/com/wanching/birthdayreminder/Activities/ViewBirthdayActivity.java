@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
+import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
+import com.wanching.birthdayreminder.Others.Person;
+import com.wanching.birthdayreminder.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

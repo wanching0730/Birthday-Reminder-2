@@ -3,7 +3,6 @@ package com.wanching.birthdayreminder.Fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -18,15 +17,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wanching.birthdayreminder.BirthdayContract;
-import com.wanching.birthdayreminder.BirthdayCursorAdapter;
-import com.wanching.birthdayreminder.BirthdayDbHelper;
-import com.wanching.birthdayreminder.BirthdayDbQueries;
-import com.wanching.birthdayreminder.DbColumns;
-import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.ViewBirthdayActivity;
 
-import org.w3c.dom.Text;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
+import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
+import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
+
+import java.util.Calendar;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -73,7 +73,11 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
-        Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+
+        String selection = BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " BETWEEN ? AND ?";
+        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()), Long.toString(Calendar.getInstance().getTimeInMillis() + 259200000)};
+
+        Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
 
         adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         adapter.swapCursor(cursor);

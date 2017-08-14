@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.wanching.birthdayreminder.Fragments.DatePickerFragment;
+import com.wanching.birthdayreminder.Others.Person;
+import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -109,8 +115,8 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         }
     }
 
-    public void SetDate(View view) {
-        DialogFragment fragment = new DatePickerFragment();
-        fragment.show(getSupportFragmentManager(), "datePicker");
-    }
+//    public void SetDate(View view) {
+//        DialogFragment fragment = new DatePickerFragment();
+//        fragment.show(getSupportFragmentManager(), "datePicker");
+//    }
 }

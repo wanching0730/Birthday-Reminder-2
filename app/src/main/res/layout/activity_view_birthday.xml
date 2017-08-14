@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorBackground"
-    tools:context="com.wanching.birthdayreminder.ViewBirthdayActivity">
+    tools:context="com.wanching.birthdayreminder.Activities.ViewBirthdayActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"

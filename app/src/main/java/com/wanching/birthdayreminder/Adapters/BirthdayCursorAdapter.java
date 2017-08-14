@@ -1,24 +1,23 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.text.format.DateFormat;
 
-import java.util.ArrayList;
+import com.wanching.birthdayreminder.Others.Person;
+import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class BirthdayCursorAdapter extends CursorAdapter{
 

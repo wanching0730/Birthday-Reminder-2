@@ -1,10 +1,11 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.SQLiteDatabase;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
+import com.wanching.birthdayreminder.Others.Person;
 
 import java.io.ByteArrayOutputStream;
 
