@@ -29,7 +29,7 @@
     <EditText
         android:id="@+id/add_name"
         android:hint="@string/name"
-        android:layout_width="240dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:layout_margin="14sp" />

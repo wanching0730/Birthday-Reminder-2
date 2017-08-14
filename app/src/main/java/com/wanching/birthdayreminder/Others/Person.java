@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Others;
 
 import android.graphics.Bitmap;
 import android.util.Log;

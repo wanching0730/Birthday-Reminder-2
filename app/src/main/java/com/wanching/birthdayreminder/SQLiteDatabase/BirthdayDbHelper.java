@@ -1,8 +1,10 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.SQLiteDatabase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 
 public class BirthdayDbHelper extends SQLiteOpenHelper {
 
