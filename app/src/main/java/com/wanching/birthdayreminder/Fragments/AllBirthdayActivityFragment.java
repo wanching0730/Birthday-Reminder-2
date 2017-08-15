@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -135,6 +137,14 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             AlertDialog alert = builder.create();
             alert.setTitle("WARNING");
             alert.show();
+        }
+        else if (id == R.id.action_backup){
+            ConnectivityManager connManager = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+            if(networkInfo != null && networkInfo.isConnected()){
+
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
