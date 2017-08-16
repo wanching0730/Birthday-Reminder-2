@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
-
 public class BirthdayDbHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -21,7 +19,7 @@ public class BirthdayDbHelper extends SQLiteOpenHelper {
                     BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " INTEGER," +
                     BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY + " INTEGER)";
 
-    public BirthdayDbHelper (Context context){
+    public BirthdayDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

@@ -2,10 +2,8 @@ package com.wanching.birthdayreminder.Others;
 
 import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
@@ -26,10 +24,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
- * Created by WanChing on 14/8/2017.
+ * Created by WanChing on 6/8/2017.
  */
 
 public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> {
@@ -66,16 +63,7 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
 
         //TODO: open static method
         while (cursor.moveToNext()) {
-            byte[] imageByte = cursor.getBlob(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE));
-            Person person = new Person(
-                    cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)),
-                    cursor.getString(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME)),
-                    cursor.getString(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_EMAIL)),
-                    cursor.getString(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE)),
-                    BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length),
-                    new Date(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE))),
-                    ViewBirthdayActivity.changeBoolean(cursor.getInt(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY)))
-            );
+            Person person = BirthdayDbQueries.retrievePerson(cursor);
 
             persons.add(person);
         }
@@ -92,10 +80,10 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
                 JSONObject jsonObject = new JSONObject();
 
                 jsonArray.put(new JSONObject().put("id", persons.get(i).getId())
-                .put("name", persons.get(i).getName())
-                .put("email", persons.get(i).getEmail())
-                .put("phone", persons.get(i).getPhone())
-                .put("birthday", persons.get(i).getBirthday().getTime()));
+                        .put("name", persons.get(i).getName())
+                        .put("email", persons.get(i).getEmail())
+                        .put("phone", persons.get(i).getPhone())
+                        .put("birthday", persons.get(i).getBirthday().getTime()));
             }
 
         } catch (JSONException ex) {

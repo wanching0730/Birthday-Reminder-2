@@ -1,7 +1,5 @@
 package com.wanching.birthdayreminder.SQLiteDatabase;
 
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
-
 /**
  * Created by WanChing on 13/8/2017.
  */

@@ -4,33 +4,39 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wanching.birthdayreminder.Others.Person;
+import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
-import com.wanching.birthdayreminder.Others.Person;
-import com.wanching.birthdayreminder.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Created by WanChing on 6/8/2017.
+ */
+
 public class ViewBirthdayActivity extends AppCompatActivity {
 
     public static final String EXTRA_BIRTHDAY = "com.wanching.birthdayreminder.BIRTHDAY";
-    public static final String EXTRA_MESSAGE = "com.wanching.birthdayreminder.MESSAGE";
     private Person person;
+
+    public static boolean changeBoolean(int notify) {
+        return notify > 0;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +58,8 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
         Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, null);
 
-        if(cursor.moveToNext()){
-            byte[] imageByte = cursor.getBlob(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE));
-            person = new Person(
-                    cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)),
-                    cursor.getString(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME)),
-                    cursor.getString(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_EMAIL)),
-                    cursor.getString(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE)),
-                    BitmapFactory.decodeByteArray(imageByte, 0, imageByte.length),
-                    new Date(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE))),
-                    changeBoolean(cursor.getInt(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY)))
-            );
+        if (cursor.moveToNext()) {
+            person = BirthdayDbQueries.retrievePerson(cursor);
 
             setTitle(getResources().getString(R.string.birthday_wish) + " to " + person.getName());
 
@@ -78,7 +75,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
             Calendar today = Calendar.getInstance();
             Calendar annualBirthday = person.getThisYearBirthday();
             Calendar nextBirthday = person.getNextYearBirthday();
-            if(today.get(Calendar.MONTH) < annualBirthday.get(Calendar.MONTH) || (today.get(Calendar.MONTH) == annualBirthday.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < annualBirthday.get(Calendar.DAY_OF_MONTH))){
+            if (today.get(Calendar.MONTH) < annualBirthday.get(Calendar.MONTH) || (today.get(Calendar.MONTH) == annualBirthday.get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < annualBirthday.get(Calendar.DAY_OF_MONTH))) {
                 tvDate.setText("Birthday: " + new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(person.getThisYearBirthday().getTime()));
                 CountDownTimer timer = new CountDownTimer(annualBirthday.getTimeInMillis(), 1000) {
                     @Override
@@ -91,7 +88,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
                     }
                 }.start();
-            }else {
+            } else {
                 tvDate.setText("Next Birthday: " + new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(person.getNextYearBirthday().getTime()));
                 CountDownTimer timer = new CountDownTimer(nextBirthday.getTimeInMillis(), 1000) {
                     @Override
@@ -108,13 +105,13 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        }else{
+        } else {
             Log.e("id not found", Long.toString(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID))));
             finish();
         }
     }
 
-    public void onTickCalculation(long millisUntilFinished){
+    public void onTickCalculation(long millisUntilFinished) {
 
         TextView tvDay = (TextView) findViewById(R.id.day);
         TextView tvHour = (TextView) findViewById(R.id.hour);
@@ -131,29 +128,14 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         tvSecond.setText(Long.toString(((serverUptimeSeconds % 86400) % 3600) % 60));
     }
 
-    public static boolean changeBoolean(int notify){
-        return notify > 0;
-    }
-
-    public void editBirthday(View view){
+    public void editBirthday(View view) {
         Intent intent = new Intent(getApplicationContext(), UpdateBirthdayActivity.class);
         intent.putExtra(EXTRA_BIRTHDAY, person);
-        if(intent.resolveActivity(getPackageManager()) != null)
+        if (intent.resolveActivity(getPackageManager()) != null)
             startActivity(intent);
     }
 
-    public void messageWish(View view){
-//        Uri uri = Uri.parse("smsto:" + person.getPhone());
-//        Intent intent = new Intent(Intent.ACTION_SEND, uri);
-//        intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.birthday_wish));
-//        intent.setType("text/plain");
-//        startActivity(intent);
-//        Intent intent = new Intent();
-//        intent.setAction(Intent.ACTION_SEND);
-//        intent.putExtra(EXTRA_BIRTHDAY, R.string.birthday_wish);
-//        Intent chooser = new Intent(Intent.createChooser(intent, "Please select an app to send your wishes"));
-//        if(intent.resolveActivity(getPackageManager()) != null)
-//            startActivity(chooser);
+    public void messageWish(View view) {
 
         Intent smsIntent = new Intent(Intent.ACTION_VIEW);
         smsIntent.setType("vnd.android-dir/mms-sms");
@@ -162,12 +144,12 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         startActivity(smsIntent);
     }
 
-    public  void deleteBirthday (View view){
+    public void deleteBirthday(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewBirthdayActivity.this);
-        builder .setCancelable(false)
+        builder.setCancelable(false)
                 .setMessage("Are you sure you want to delete this record?")
-                .setPositiveButton("YES",new DialogInterface.OnClickListener() {
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
                         dbq.delete(person.getId());

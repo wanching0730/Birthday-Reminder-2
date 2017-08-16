@@ -11,6 +11,8 @@
     <string name="title_activity_upcoming_birthday">UpcomingBirthday</string>
     <string name="title_activity_all_birthday">AllBirthdayActivity</string>
     <string name="title_activity_add_birthday">AddBirthdayActivity</string>
+    <string name="title_upcoming_tab">Upcoming</string>
+
 
     <string name="name">Name</string>
     <string name="email_address">Email Address</string>

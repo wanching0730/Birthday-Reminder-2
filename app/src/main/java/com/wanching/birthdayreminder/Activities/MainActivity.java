@@ -4,13 +4,13 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -21,24 +21,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
+import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>{
+/**
+ * Created by WanChing on 6/8/2017.
+ */
 
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>, UpcomingBirthdayFragment.OnSetCountListener {
+
+    private final static int LOADER_ID = 0;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private FragmentManager fm;
     private FragmentTransaction ft;
-    private final static int LOADER_ID = 0;
+    private TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
+        tabLayout = (TabLayout) findViewById(R.id.tab);
         tabLayout.setupWithViewPager(viewPager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
-                if(intent.resolveActivity(getPackageManager()) != null)
+                if (intent.resolveActivity(getPackageManager()) != null)
                     startActivity(intent);
             }
         });
@@ -70,12 +77,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if(item.getItemId() == R.id.setting){
+                if (item.getItemId() == R.id.setting) {
 //                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
 //                    startActivity(intent);
                 }
 
-                if(item.getItemId() == R.id.add_wishes){
+                if (item.getItemId() == R.id.add_wishes) {
                 }
 
                 return false;
@@ -86,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -99,13 +107,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_backup){
-            ConnectivityManager connManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (id == R.id.action_backup) {
+            ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-            if(networkInfo != null && networkInfo.isConnected()){
+            if (networkInfo != null && networkInfo.isConnected()) {
                 getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
-            }
-            else{
+            } else {
                 Toast.makeText(MainActivity.this, "Network is unavaiable", Toast.LENGTH_SHORT).show();
             }
         }
@@ -120,19 +127,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject response) {
-        Toast.makeText(this, outputMessage(response), Toast.LENGTH_SHORT).show();
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, outputMessage(response), Snackbar.LENGTH_LONG).show();
+        Log.v("data synced", response.toString());
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
     }
 
-    public String outputMessage(JSONObject response){
-        try{
+    public String outputMessage(JSONObject response) {
+        try {
             return Integer.toString(response.getInt("recordsSynced")) + " " + getResources().getString(R.string.back_data_message);
-        }catch (JSONException ex){
+        } catch (JSONException ex) {
             Log.e("JSONEXCEPTION", ex.toString());
             return null;
         }
+    }
+
+    @Override
+    public void setCount(int count) {
+        tabLayout.getTabAt(0).setText(getResources().getString(R.string.title_upcoming_tab) + " (" + count + ")");
     }
 }

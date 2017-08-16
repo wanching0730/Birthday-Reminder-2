@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -29,26 +27,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
+import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
-import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Created by WanChing on 6/8/2017.
  */
+
 public class AllBirthdayActivityFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, LoaderManager.LoaderCallbacks<Cursor> {
 
+    private final static int LOADER_ID = 0;
     private ListView listView;
     private SearchView searchView = null;
     private TextView tvEmpty;
     private String subString;
     private BirthdayCursorAdapter adapter;
-    private final static int LOADER_ID = 0;
-   // public static final String EXTRA_ID_2 = "com.wanching.birthdayreminder.Birthdat.ID2";
 
     public AllBirthdayActivityFragment() {
     }
@@ -63,28 +61,28 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Cursor cursor = (Cursor)adapterView.getItemAtPosition(position);
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 
                 Intent intent = new Intent(getContext(), ViewBirthdayActivity.class);
                 intent.putExtra("ID", cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)));
-                startActivity(intent);}
+                startActivity(intent);
+            }
         });
 
         tvEmpty = rootView.findViewById(R.id.empty_view);
         listView.setEmptyView(tvEmpty);
         tvEmpty.setText("No Birthday Record Found!");
 
-
         //to display the menu in fragment
         setHasOptionsMenu(true);
 
-        return  rootView;
+        return rootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
     public void onResume() {
@@ -101,7 +99,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         inflater.inflate(R.menu.menu_all_birthday, menu);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        if(searchView == null)
+        if (searchView == null)
             return;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
         searchView.setOnQueryTextListener(this);
@@ -146,7 +144,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         subString = null;
         getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
         return true;
-
     }
 
     @Override
@@ -156,10 +153,10 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(!TextUtils.isEmpty(newText)){
+        if (!TextUtils.isEmpty(newText)) {
             subString = newText;
             getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
-        }else{
+        } else {
             subString = null;
             getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
         }
@@ -177,7 +174,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         adapter.swapCursor(data);
         tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
-        //onResume();
     }
 
     @Override
@@ -186,12 +182,12 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     }
 
-    public static final class DbLoader extends AsyncTaskLoader<Cursor>{
+    public static final class DbLoader extends AsyncTaskLoader<Cursor> {
 
         private String substring;
         private Context context;
 
-        public DbLoader (Context context, String substring){
+        public DbLoader(Context context, String substring) {
             super(context);
 
             this.context = context;
@@ -199,15 +195,15 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         }
 
         @Override
-        public Cursor loadInBackground(){
+        public Cursor loadInBackground() {
 
             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(context));
             Cursor cursor;
 
-            if(substring != null){
+            if (substring != null) {
                 String[] selectionArgs = {"%" + substring + "%"};
                 cursor = dbq.read(DbColumns.columns, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " LIKE ?", selectionArgs, null, null, null);
-            }else{
+            } else {
                 cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
             }
             return cursor;
