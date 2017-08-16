@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -68,9 +70,9 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                 startActivity(intent);}
         });
 
-        tvEmpty = (TextView) getActivity().findViewById(R.id.empty_view);
-        listView.setEmptyView(tvEmpty);
-        tvEmpty.setText("No Birthday Record Found!");
+//        tvEmpty = (TextView) getActivity().findViewById(R.id.empty_view);
+//        listView.setEmptyView(tvEmpty);
+//        tvEmpty.setText("No Birthday Record Found!");
 
 
         //to display the menu in fragment
@@ -136,6 +138,17 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             alert.setTitle("WARNING");
             alert.show();
         }
+        else if (id == R.id.action_backup){
+            ConnectivityManager connManager = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+            if(networkInfo != null && networkInfo.isConnected()){
+
+            }
+            else{
+                Toast.makeText(getContext(), "Network is unavaiable", Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -174,7 +187,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
-        tvEmpty.setVisibility(View.GONE);
+//        tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
         //onResume();
     }

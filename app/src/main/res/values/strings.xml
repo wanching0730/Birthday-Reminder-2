@@ -2,6 +2,7 @@
     <string name="app_name">Birthday Reminder</string>
     <string name="action_delete_all">Delete All</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_backup">Backup Data</string>
     <string name="title_activity_update_birthday">UpdateBirthdayActivity</string>
     <string name="name">Name</string>
     <string name="email_address">Email Address</string>

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,14 +71,16 @@ public class UpcomingBirthdayFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.v("upcoming cursor", "got cursor1");
 
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
-
-        String selection = BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " BETWEEN ? AND ?";
+        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
+        //String selection = BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " BETWEEN ? AND ? ";
         String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()), Long.toString(Calendar.getInstance().getTimeInMillis() + 259200000)};
 
         Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
+        Log.v("upcoming cursor", "got cursor2");
 
         adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         adapter.swapCursor(cursor);
