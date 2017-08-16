@@ -115,8 +115,8 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         }
     }
 
-//    public void SetDate(View view) {
-//        DialogFragment fragment = new DatePickerFragment();
-//        fragment.show(getSupportFragmentManager(), "datePicker");
-//    }
+    public void SetDate(View view) {
+        DialogFragment fragment = new DatePickerFragment();
+        fragment.show(getSupportFragmentManager(), "datePicker");
+    }
 }

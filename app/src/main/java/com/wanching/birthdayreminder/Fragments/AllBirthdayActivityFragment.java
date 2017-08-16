@@ -70,9 +70,9 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                 startActivity(intent);}
         });
 
-        tvEmpty = (TextView) getActivity().findViewById(R.id.empty_view);
-        listView.setEmptyView(tvEmpty);
-        tvEmpty.setText("No Birthday Record Found!");
+//        tvEmpty = (TextView) getActivity().findViewById(R.id.empty_view);
+//        listView.setEmptyView(tvEmpty);
+//        tvEmpty.setText("No Birthday Record Found!");
 
 
         //to display the menu in fragment
@@ -144,6 +144,9 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             if(networkInfo != null && networkInfo.isConnected()){
 
             }
+            else{
+                Toast.makeText(getContext(), "Network is unavaiable", Toast.LENGTH_SHORT).show();
+            }
 
         }
 
@@ -184,7 +187,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
-        tvEmpty.setVisibility(View.GONE);
+//        tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
         //onResume();
     }
