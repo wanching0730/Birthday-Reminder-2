@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -20,12 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UpdateBirthdayActivity"
+            android:name=".Activities.UpdateBirthdayActivity"
             android:label="@string/title_activity_update_birthday"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ViewBirthdayActivity" />
+        <activity android:name=".Activities.ViewBirthdayActivity" />
         <activity
-            android:name=".AddBirthdayActivity"
+            android:name=".Activities.AddBirthdayActivity"
             android:label="@string/title_activity_add_birthday"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

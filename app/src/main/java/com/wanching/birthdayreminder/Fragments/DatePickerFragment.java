@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import com.wanching.birthdayreminder.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

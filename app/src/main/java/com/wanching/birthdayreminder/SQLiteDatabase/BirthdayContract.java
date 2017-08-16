@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.SQLiteDatabase;
 
 
 import android.provider.BaseColumns;

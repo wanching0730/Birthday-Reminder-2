@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +13,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
+import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
+import com.wanching.birthdayreminder.Others.Person;
+import com.wanching.birthdayreminder.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -115,8 +122,8 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         TextView tvSecond = (TextView) findViewById(R.id.second);
 
         long startTime = System.currentTimeMillis();
-        startTime = startTime - 2;
-        long serverUptimeSeconds = (millisUntilFinished - startTime) / 2000;
+        startTime = startTime - 1;
+        long serverUptimeSeconds = (millisUntilFinished - startTime) / 1000;
 
         tvDay.setText(Long.toString(serverUptimeSeconds / 86400));
         tvHour.setText(Long.toString((serverUptimeSeconds % 86400) / 3600));

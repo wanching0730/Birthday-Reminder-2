@@ -1,9 +1,12 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
+import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter {
 

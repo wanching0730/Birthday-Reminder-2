@@ -1,4 +1,4 @@
-package com.wanching.birthdayreminder;
+package com.wanching.birthdayreminder.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +15,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
+import com.wanching.birthdayreminder.Others.Conversion;
+import com.wanching.birthdayreminder.Fragments.DatePickerFragment;
+import com.wanching.birthdayreminder.Others.Person;
+import com.wanching.birthdayreminder.R;
 
 import java.io.IOException;
 import java.text.ParseException;
