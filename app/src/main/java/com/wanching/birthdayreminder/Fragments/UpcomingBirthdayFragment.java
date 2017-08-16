@@ -58,9 +58,9 @@ public class UpcomingBirthdayFragment extends Fragment {
                 startActivity(intent);}
         });
 
-//        tvEmpty = getActivity().findViewById(R.id.empty_view);
-//        listView.setEmptyView(tvEmpty);
-//        tvEmpty.setText("No Birthday Record Found!");
+        tvEmpty = rootView.findViewById(R.id.empty_view);
+        listView.setEmptyView(tvEmpty);
+        tvEmpty.setText("No Birthday Record Found!");
 
         setHasOptionsMenu(true);
 
@@ -84,9 +84,6 @@ public class UpcomingBirthdayFragment extends Fragment {
         adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         adapter.swapCursor(cursor);
         listView.setAdapter(adapter);
-//
-//        TextView tv = getActivity().findViewById(R.id.empty_view);
-//        listView.setEmptyView(tv);
     }
 
     @Override

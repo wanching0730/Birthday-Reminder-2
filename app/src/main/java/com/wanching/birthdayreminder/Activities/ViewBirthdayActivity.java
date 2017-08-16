@@ -131,7 +131,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         tvSecond.setText(Long.toString(((serverUptimeSeconds % 86400) % 3600) % 60));
     }
 
-    public boolean changeBoolean(int notify){
+    public static boolean changeBoolean(int notify){
         return notify > 0;
     }
 
@@ -143,16 +143,23 @@ public class ViewBirthdayActivity extends AppCompatActivity {
     }
 
     public void messageWish(View view){
-        Uri uri = Uri.parse("smsto:" + person.getPhone());
-        Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
-        intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.birthday_wish));
-        startActivity(intent);
+//        Uri uri = Uri.parse("smsto:" + person.getPhone());
+//        Intent intent = new Intent(Intent.ACTION_SEND, uri);
+//        intent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.birthday_wish));
+//        intent.setType("text/plain");
+//        startActivity(intent);
 //        Intent intent = new Intent();
 //        intent.setAction(Intent.ACTION_SEND);
 //        intent.putExtra(EXTRA_BIRTHDAY, R.string.birthday_wish);
 //        Intent chooser = new Intent(Intent.createChooser(intent, "Please select an app to send your wishes"));
 //        if(intent.resolveActivity(getPackageManager()) != null)
 //            startActivity(chooser);
+
+        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+        smsIntent.setType("vnd.android-dir/mms-sms");
+        smsIntent.putExtra("address", person.getPhone());
+        smsIntent.putExtra("sms_body", "happy birthday");
+        startActivity(smsIntent);
     }
 
     public  void deleteBirthday (View view){

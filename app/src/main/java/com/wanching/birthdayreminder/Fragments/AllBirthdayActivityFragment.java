@@ -70,9 +70,9 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                 startActivity(intent);}
         });
 
-//        tvEmpty = (TextView) getActivity().findViewById(R.id.empty_view);
-//        listView.setEmptyView(tvEmpty);
-//        tvEmpty.setText("No Birthday Record Found!");
+        tvEmpty = rootView.findViewById(R.id.empty_view);
+        listView.setEmptyView(tvEmpty);
+        tvEmpty.setText("No Birthday Record Found!");
 
 
         //to display the menu in fragment
@@ -98,7 +98,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.clear();
         inflater.inflate(R.menu.menu_all_birthday, menu);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
@@ -115,10 +114,10 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         int id = item.getItemId();
 
         if (id == R.id.action_delete_all) {
-           AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder .setCancelable(false)
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setCancelable(false)
                     .setMessage("Are you sure you want to delete all records?")
-                    .setPositiveButton("YES",new DialogInterface.OnClickListener(){
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
                             Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
@@ -137,17 +136,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             AlertDialog alert = builder.create();
             alert.setTitle("WARNING");
             alert.show();
-        }
-        else if (id == R.id.action_backup){
-            ConnectivityManager connManager = (ConnectivityManager)  getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-            if(networkInfo != null && networkInfo.isConnected()){
-
-            }
-            else{
-                Toast.makeText(getContext(), "Network is unavaiable", Toast.LENGTH_SHORT).show();
-            }
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -187,7 +175,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
-//        tvEmpty.setVisibility(View.GONE);
+        tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
         //onResume();
     }
