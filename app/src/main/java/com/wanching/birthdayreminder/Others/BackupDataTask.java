@@ -1,14 +1,8 @@
 package com.wanching.birthdayreminder.Others;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 
 import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
@@ -44,7 +38,7 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
     private Activity activity;
     private ArrayList<Person> persons;
 
-    public BackupDataTask (Activity activity){
+    public BackupDataTask(Activity activity) {
         super(activity);
         this.activity = activity;
     }
@@ -55,23 +49,23 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
 
         JSONObject response = null;
 
-        try{
+        try {
             response = postJson();
-        }catch (IOException ex){
+        } catch (IOException ex) {
             Log.e("IO_EXCEPTION", ex.toString());
         }
 
         return response;
     }
 
-    public void readDbData(){
+    public void readDbData() {
 
         persons = new ArrayList<Person>();
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
         Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
 
         //TODO: open static method
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             byte[] imageByte = cursor.getBlob(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE));
             Person person = new Person(
                     cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)),
@@ -87,37 +81,38 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
         }
     }
 
-    public JSONArray convertToJsonArray(){
+    public JSONArray convertToJsonArray() {
 
-        JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        for(int i = 0; i < persons.size(); i++){
 
-            try{
-                jsonObject.put("id", persons.get(i).getId());
-                jsonObject.put("name", persons.get(i).getName());
-                jsonObject.put("email", persons.get(i).getEmail());
-                jsonObject.put("phone", persons.get(i).getPhone());
-                jsonObject.put("birthday", persons.get(i).getBirthday().getTime());
-                jsonObject = null;
+        try {
 
-            }catch (JSONException ex){
-                Log.e("EXCEPTION", ex.toString());
-                return null;
+            for (int i = 0; i < persons.size(); i++) {
+                JSONObject jsonObject = new JSONObject();
+
+                jsonArray.put(new JSONObject().put("id", persons.get(i).getId())
+                .put("name", persons.get(i).getName())
+                .put("email", persons.get(i).getEmail())
+                .put("phone", persons.get(i).getPhone())
+                .put("birthday", persons.get(i).getBirthday().getTime()));
             }
 
-            jsonArray.put(jsonObject);
+        } catch (JSONException ex) {
+            Log.e("JSONEXCEPTION", ex.toString());
+            return null;
+
+
         }
         return jsonArray;
     }
 
-    private JSONObject postJson() throws IOException{
+    private JSONObject postJson() throws IOException {
 
         InputStream is = null;
         OutputStream os = null;
 
-        try{
+        try {
             URL url = new URL(JSON_URL);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -135,50 +130,47 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
             os.close();
 
             int responseCode = conn.getResponseCode();
-            if(responseCode == 200){
+            if (responseCode == 200) {
                 is = conn.getInputStream();
 
                 return readInputStream(is);
-            }else {
+            } else {
                 Log.e("HTTP_ERROR", Integer.toString(responseCode));
                 return null;
             }
 
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("EXCEPTION", ex.toString());
             return null;
-        }finally {
-            if(is != null){
+        } finally {
+            if (is != null) {
                 is.close();
             }
         }
     }
 
-    public JSONObject readInputStream(InputStream is) throws IOException, JSONException{
+    public JSONObject readInputStream(InputStream is) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         StringBuilder builder = new StringBuilder();
 
         String input;
-        while((input = reader.readLine()) != null)
+        while ((input = reader.readLine()) != null)
             builder.append(input);
 
         return new JSONObject(builder.toString());
     }
 
-    private String getPostDataString (JSONArray jsonArray) throws Exception{
+    private String getPostDataString(JSONArray jsonArray) throws Exception {
 
         StringBuilder result = new StringBuilder();
 
         result.append(URLEncoder.encode("data", "UTF-8"));
         result.append("=");
         result.append(URLEncoder.encode(jsonArray.toString(), "UTF-8"));
-        Log.d("URL DATA", result.toString());
 
         return result.toString();
     }
-
-
 
 
 }

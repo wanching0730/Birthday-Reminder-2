@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>{
@@ -118,11 +120,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject response) {
-        Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, outputMessage(response), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
+    }
 
+    public String outputMessage(JSONObject response){
+        try{
+            return Integer.toString(response.getInt("recordsSynced")) + " " + getResources().getString(R.string.back_data_message);
+        }catch (JSONException ex){
+            Log.e("JSONEXCEPTION", ex.toString());
+            return null;
+        }
     }
 }
