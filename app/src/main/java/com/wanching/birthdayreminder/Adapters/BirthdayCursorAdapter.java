@@ -55,7 +55,7 @@ public class BirthdayCursorAdapter extends CursorAdapter {
                 formattedDate,
                 changeBoolean(cursor.getInt(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY))));
 
-        Person.Countdown countdown = person.getCountdown();
+        //Person.Countdown countdown = person.getCountdown();
 
         TextView tvName = view.findViewById(R.id.name);
         TextView tvMonth = view.findViewById(R.id.month);
@@ -76,13 +76,13 @@ public class BirthdayCursorAdapter extends CursorAdapter {
             tvCountdown.setText("Today");
             tvAge.setText("Turned " + newAge);
         } else if (today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)) {
-            tvCountdown.setText("Coming\nIn\n" + countdown.getDays() + "\nDays");
+            tvCountdown.setText("Coming\nIn\n" + person.getCountdown() + "\nDays");
             tvAge.setText("Turning " + (newAge + 1));
         } else if (today.get(Calendar.MONTH) < person.getBirthdayAsCalendar().get(Calendar.MONTH)) {
-            tvCountdown.setText("Coming\nIn\n" + countdown.getDays() + "\nDays");
+            tvCountdown.setText("Coming\nIn\n" + person.getCountdown() + "\nDays");
             tvAge.setText("Turning " + (newAge + 1));
         } else {
-            tvCountdown.setText(countdown.getDays() + "\nDays\nAgo");
+            tvCountdown.setText(person.getCountdown() + "\nDays\nAgo");
             tvAge.setText("Turned " + newAge);
         }
     }

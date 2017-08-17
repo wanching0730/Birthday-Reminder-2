@@ -114,47 +114,35 @@ public class Person implements Serializable {
         this.birthday = birthday;
     }
 
-    public Countdown getCountdown() {
+    public long getCountdown(){
         Calendar today = Calendar.getInstance();
         Calendar birthday = getThisYearBirthday();
 
         long duration = birthday.getTimeInMillis() - today.getTimeInMillis();
+        long days = TimeUnit.MILLISECONDS.toDays(duration);
 
-        Countdown countdown = new Countdown();
-        countdown.durationInMillis = duration;
-        countdown.days = TimeUnit.MILLISECONDS.toDays(duration);
-        countdown.hours = TimeUnit.MILLISECONDS.toHours(duration) - TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(duration));
-        countdown.minutes = TimeUnit.MILLISECONDS.toMinutes(duration) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(duration));
-        countdown.seconds = TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
-
-        return countdown;
+        return Math.abs(days);
     }
 
-    public class Countdown {
-        private long durationInMillis;
-        private long days;
-        private long hours;
-        private long minutes;
-        private long seconds;
-
-        public long getDurationInMillis() {
-            return durationInMillis;
-        }
-
-        public long getDays() {
-            return Math.abs(days);
-        }
-
-        public long getHours() {
-            return Math.abs(hours);
-        }
-
-        public long getMinutes() {
-            return Math.abs(minutes);
-        }
-
-        public long getSeconds() {
-            return Math.abs(seconds);
-        }
-    }
+//    public Countdown getCountdown() {
+//        Calendar today = Calendar.getInstance();
+//        Calendar birthday = getThisYearBirthday();
+//
+//        long duration = birthday.getTimeInMillis() - today.getTimeInMillis();
+//
+//        Countdown countdown = new Countdown();
+//
+//        countdown.days = TimeUnit.MILLISECONDS.toDays(duration);
+//
+//        return countdown;
+//    }
+//
+//    public class Countdown {
+//
+//        private long days;
+//
+//        public long getDays() {
+//            return Math.abs(days);
+//        }
+//    }
 }
