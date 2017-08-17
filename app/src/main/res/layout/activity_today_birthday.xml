@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView
-    android:id="@+id/today_birthday_list"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:id="@+id/view_relative_layout"
     android:layout_height="match_parent"
-    tools:context="com.wanching.birthdayreminder.Activities.TodayBirthdayActivity">
+    android:layout_width="match_parent">
 
-</ListView>
+    <ListView
+        android:id="@+id/today_birthday_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"/>
+
+    <TextView
+        android:id="@+id/today_empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        tools:text="No birthday records"/>
+
+</RelativeLayout>
