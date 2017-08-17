@@ -1,6 +1,8 @@
 package com.wanching.birthdayreminder.Activities;
 
+import android.app.AlarmManager;
 import android.app.LoaderManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +36,7 @@ import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
 import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
 import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
 import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
+import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
 
@@ -41,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by WanChing on 6/8/2017.
@@ -64,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setUpNptification();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
@@ -111,6 +117,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        setUpNptification();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -175,5 +187,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void refreshFragment() {
         adapter.getTargetFragment(0).onResume();
+    }
+
+    private void setUpNptification(){
+
+        AlarmManager alarmManager;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 1);
+
+        Intent intent = new Intent(this, MyReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 }

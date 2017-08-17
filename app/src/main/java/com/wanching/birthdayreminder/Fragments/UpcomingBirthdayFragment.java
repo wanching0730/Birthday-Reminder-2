@@ -1,5 +1,7 @@
 package com.wanching.birthdayreminder.Fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wanching.birthdayreminder.Activities.MainActivity;
+import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
@@ -73,7 +77,8 @@ public class UpcomingBirthdayFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.v("upcoming cursor", "got cursor1");
+
+        //setUpNptification();
 
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
@@ -143,4 +148,17 @@ public class UpcomingBirthdayFragment extends Fragment {
             throw new ClassCastException(context.toString() + " must implement OnSetCountListener");
         }
     }
+
+//    private void setUpNptification(){
+//
+//        AlarmManager alarmManager;
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.set(Calendar.HOUR_OF_DAY, 8);
+//
+//        Intent intent = new Intent(getContext(), MyReceiver.class);
+//        PendingIntent alarmIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+//        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+//    }
 }

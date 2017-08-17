@@ -1,5 +1,7 @@
 package com.wanching.birthdayreminder.Fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,13 +29,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wanching.birthdayreminder.Activities.MainActivity;
 import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
+import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
+
+import java.util.Calendar;
 
 /**
  * Created by WanChing on 6/8/2017.
@@ -88,6 +94,8 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     public void onResume() {
         super.onResume();
+
+        //setUpNptification();
 
         adapter = new BirthdayCursorAdapter(getContext(), null, 0);
         listView.setAdapter(adapter);
@@ -225,8 +233,21 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             }
             return cursor;
         }
-
-
     }
+
+//    private void setUpNptification(){
+//
+//        AlarmManager alarmManager;
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.set(Calendar.HOUR_OF_DAY, 8);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 1);
+//
+//        Intent intent = new Intent(getContext(), MyReceiver.class);
+//        PendingIntent alarmIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+//        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+//    }
 }
 

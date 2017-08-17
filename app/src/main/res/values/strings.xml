@@ -37,4 +37,7 @@
     <string name="second_wish">Good Luck</string>
     <string name="third_wish">Stay happy</string>
 
+    <string name="notification_content_title">Today birthday list</string>
+    <string name="notification_content_text">() people birthday today</string>
+    <string name="title_activity_today_birthday">TodayBirthdayActivity</string>
 </resources>
