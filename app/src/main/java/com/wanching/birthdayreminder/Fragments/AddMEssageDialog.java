@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.ContextThemeWrapper;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.EditText;
 
 import com.wanching.birthdayreminder.R;
