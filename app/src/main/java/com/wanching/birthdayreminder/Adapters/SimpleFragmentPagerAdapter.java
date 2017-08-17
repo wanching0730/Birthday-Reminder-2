@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.util.SparseArrayCompat;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 import android.widget.TableLayout;
 
 import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
@@ -16,6 +19,7 @@ import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter{
 
     private Context context;
+    SparseArray<Fragment> sparseArray = new SparseArray<>();
 
     public SimpleFragmentPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -45,5 +49,22 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter{
             return "Upcoming";
         else
             return "All";
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment)super.instantiateItem(container, position);
+        sparseArray.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        sparseArray.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public Fragment getTargetFragment(int position){
+        return sparseArray.get(position);
     }
 }

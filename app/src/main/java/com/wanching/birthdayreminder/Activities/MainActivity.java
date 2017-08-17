@@ -2,6 +2,7 @@ package com.wanching.birthdayreminder.Activities;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
@@ -17,15 +18,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
+import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
 import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
@@ -33,11 +39,13 @@ import com.wanching.birthdayreminder.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by WanChing on 6/8/2017.
  */
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>, UpcomingBirthdayFragment.OnSetCountListener {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>, UpcomingBirthdayFragment.OnSetCountListener, AllBirthdayActivityFragment.OnRereshFragmentListener {
 
     private final static int LOADER_ID = 0;
     private DrawerLayout drawerLayout;
@@ -45,6 +53,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private FragmentManager fm;
     private FragmentTransaction ft;
     private TabLayout tabLayout;
+    private SimpleFragmentPagerAdapter adapter;
+
+    public static ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
+        adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         tabLayout = (TabLayout) findViewById(R.id.tab);
@@ -83,6 +94,33 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
 
                 if (item.getItemId() == R.id.add_wishes) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getBaseContext(), R.style.newMessageDialog));
+
+                    final EditText etNewMessage = new EditText(getApplicationContext());
+                    builder.setView(etNewMessage);
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            String newMeessage = etNewMessage.getText().toString();
+                            arrayList.add(newMeessage);
+                        }
+                    });
+
+                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
+                    dialog.show();
+
+//                    arrayList.add("halo");
+//                    arrayList.add("yo");
                 }
 
                 return false;
@@ -148,5 +186,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void setCount(int count) {
         tabLayout.getTabAt(0).setText(getResources().getString(R.string.title_upcoming_tab) + " (" + count + ")");
+    }
+
+    @Override
+    public void refreshFragment() {
+        adapter.getTargetFragment(0).onResume();
     }
 }

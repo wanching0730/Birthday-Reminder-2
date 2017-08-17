@@ -47,6 +47,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     private TextView tvEmpty;
     private String subString;
     private BirthdayCursorAdapter adapter;
+    private OnRereshFragmentListener listener;
 
     public AllBirthdayActivityFragment() {
     }
@@ -121,6 +122,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                             Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
                             dbq.deleteAll();
                             adapter.swapCursor(cursor);
+                            listener.refreshFragment();
                             Toast.makeText(getContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
                             onResume();
                         }
@@ -182,6 +184,21 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     }
 
+    public interface OnRereshFragmentListener{
+        void refreshFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            listener = (OnRereshFragmentListener) context;
+        }catch (ClassCastException ex){
+            throw new ClassCastException(context.toString() + " must implement interface");
+        }
+    }
+
     public static final class DbLoader extends AsyncTaskLoader<Cursor> {
 
         private String substring;
@@ -208,6 +225,8 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             }
             return cursor;
         }
+
+
     }
 }
 
