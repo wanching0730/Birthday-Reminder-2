@@ -75,7 +75,10 @@ public class BirthdayCursorAdapter extends CursorAdapter {
         if (today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) == person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)) {
             tvCountdown.setText("Today");
             tvAge.setText("Turned " + newAge);
-        } else if (today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)) {
+        } else if(person.getCountdown() == 0){
+            tvCountdown.setText("Tomorrow");
+            tvAge.setText("Turning " + (newAge + 1));
+        }else if (today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) < person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)) {
             tvCountdown.setText("Coming\nIn\n" + person.getCountdown() + "\nDays");
             tvAge.setText("Turning " + (newAge + 1));
         } else if (today.get(Calendar.MONTH) < person.getBirthdayAsCalendar().get(Calendar.MONTH)) {
