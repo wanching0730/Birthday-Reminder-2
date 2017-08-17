@@ -28,6 +28,7 @@ public class NotifyIntentService extends IntentService {
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle(getResources().getString(R.string.notification_content_title));
         builder.setContentText(getResources().getString(R.string.notification_content_text));
+        builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable.cake);
 
         Intent listBirthdayIntent = new Intent(this, TodayBirthdayActivity.class);

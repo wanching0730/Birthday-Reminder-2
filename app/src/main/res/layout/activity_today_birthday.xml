@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/list_item"
+<ListView
+    android:id="@+id/today_birthday_list"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:weightSum="7"
-    android:layout_height="90sp">
+    android:layout_height="match_parent"
+    tools:context="com.wanching.birthdayreminder.Activities.TodayBirthdayActivity">
 
-        <TextView
-            android:id="@+id/month"
-            tools:text="Month"
-            style="@style/CommonStyle"/>
-
-</LinearLayout>
+</ListView>

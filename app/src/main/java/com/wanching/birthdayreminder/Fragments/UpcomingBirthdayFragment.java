@@ -31,6 +31,7 @@ import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -83,7 +84,8 @@ public class UpcomingBirthdayFragment extends Fragment {
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
         String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
-        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()), Long.toString(Calendar.getInstance().getTimeInMillis() + 172800000)};
+        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis() - 86400000), Long.toString(Calendar.getInstance().getTimeInMillis() + 86400000)};
+        //String[] selectionArgs =
 
         Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
         Log.v("upcoming cursor", "got cursor2");
