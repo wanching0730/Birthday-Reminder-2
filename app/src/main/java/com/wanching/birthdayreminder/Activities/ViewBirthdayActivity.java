@@ -30,8 +30,10 @@ import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -155,37 +157,35 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewBirthdayActivity.this);
         builder.setTitle(String.format(getResources().getString(R.string.wishes_dialog_title), person.getName()));
 
-        arrayAdapter = new ArrayAdapter<String>(ViewBirthdayActivity.this, android.R.layout.select_dialog_singlechoice);
-        arrayAdapter.add(getResources().getString(R.string.first_wish));
-        arrayAdapter.add(getResources().getString(R.string.second_wish));
-        arrayAdapter.add(getResources().getString(R.string.third_wish));
+        List<CharSequence> charSequences = new ArrayList<>();
+
+        charSequences.add(getResources().getString(R.string.first_wish));
+        charSequences.add(getResources().getString(R.string.second_wish));
+        charSequences.add(getResources().getString(R.string.third_wish));
 
         int count = 0;
 
-        if(AddMEssageDialog.arrayList != null){
-            while(count < AddMEssageDialog.arrayList.size()){
-                String newMessage = AddMEssageDialog.arrayList.get(count);
-                arrayAdapter.add(newMessage);
+        if(MainActivity.arrayList != null) {
+            while (count < MainActivity.arrayList.size()) {
+                String newMessage = MainActivity.arrayList.get(count);
+                charSequences.add(new String(newMessage));
                 count++;
             }
         }
 
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener(){
+        final CharSequence[] charSequencesArray = charSequences.toArray(new CharSequence[charSequences.size()]);
+        builder.setSingleChoiceItems(charSequencesArray, 0, null);
+
+
+        builder.setPositiveButton(R.string.response_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position) {
-                String message = arrayAdapter.getItem(position);
-
+                int selectedPosition = ((AlertDialog) dialogInterface).getListView().getCheckedItemPosition();
+                String messageToSend = charSequencesArray[selectedPosition].toString();
                 String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext());
 
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(person.getPhone().toString())));
-                intent.putExtra("sms_body", message);
+                intent.putExtra("sms_body", messageToSend);
 
                 // Can be null in case that there is no default, then the user would be able to choose any app that supports this intent.
                 if (defaultSmsPackageName != null)
@@ -197,6 +197,33 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
             }
         });
+        builder.setNegativeButton(R.string.response_cancel, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+//        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener(){
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int position) {
+//                String message = arrayAdapter.getItem(position);
+//
+//                String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext());
+//
+//                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(person.getPhone().toString())));
+//                intent.putExtra("sms_body", message);
+//
+//                // Can be null in case that there is no default, then the user would be able to choose any app that supports this intent.
+//                if (defaultSmsPackageName != null)
+//                {
+//                    intent.setPackage(defaultSmsPackageName);
+//                }
+//
+//                startActivity(intent);
+//
+//            }
+//        });
 
         builder.show();
 

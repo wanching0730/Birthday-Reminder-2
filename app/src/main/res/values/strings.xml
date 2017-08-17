@@ -36,6 +36,9 @@
     <string name="first_wish">Happy Birthday</string>
     <string name="second_wish">Good Luck</string>
     <string name="third_wish">Stay happy</string>
+    <string name="response_ok">OK</string>
+    <string name="response_cancel">CANCEL</string>
+
 
     <string name="notification_content_title">Today birthday list</string>
     <string name="notification_content_text">() people birthday today</string>

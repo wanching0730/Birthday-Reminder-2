@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TabLayout tabLayout;
     private SimpleFragmentPagerAdapter adapter;
 
+    public static ArrayList<String> arrayList;
+
     //public static ArrayList<String> arrayList;
 
     @Override
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setSupportActionBar(toolbar);
 
         setUpNptification();
+
+        arrayList = new ArrayList<>();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
