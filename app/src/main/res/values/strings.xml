@@ -32,6 +32,7 @@
     <string name="back_data_message">data had backup successfully</string>
 
     <string name="wishes_dialog_title">Select a message to wish %s</string>
+    <string name="new_wishes_dialog_title">Add new wish</string>
     <string name="first_wish">Happy Birthday</string>
     <string name="second_wish">Good Luck</string>
     <string name="third_wish">Stay happy</string>

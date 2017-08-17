@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
+import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
 import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
 import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TabLayout tabLayout;
     private SimpleFragmentPagerAdapter adapter;
 
-    public static ArrayList<String> arrayList;
+    //public static ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,36 +95,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 }
 
                 if (item.getItemId() == R.id.add_wishes) {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(getBaseContext(), R.style.newMessageDialog));
-
-                    final EditText etNewMessage = new EditText(getApplicationContext());
-                    builder.setView(etNewMessage);
-
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            String newMeessage = etNewMessage.getText().toString();
-                            arrayList.add(newMeessage);
-                        }
-                    });
-
-                    builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
-                    dialog.show();
-
-//                    arrayList.add("halo");
-//                    arrayList.add("yo");
+                    AddMEssageDialog dialog = new AddMEssageDialog();
+                    dialog.show(getSupportFragmentManager(), "AddNewMessageDialog");
                 }
 
-                return false;
+                if(item.getItemId() == R.id.drawer_backup_data){
+                    backUpData();
+                }
+
+                return true;
             }
         });
 
@@ -146,13 +126,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int id = item.getItemId();
 
         if (id == R.id.action_backup) {
-            ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
-            } else {
-                Toast.makeText(MainActivity.this, "Network is unavaiable", Toast.LENGTH_SHORT).show();
-            }
+            backUpData();
         }
 
         return super.onOptionsItemSelected(item);
@@ -180,6 +154,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } catch (JSONException ex) {
             Log.e("JSONEXCEPTION", ex.toString());
             return null;
+        }
+    }
+
+    private void backUpData (){
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
+        } else {
+            Toast.makeText(MainActivity.this, "Network is unavaiable", Toast.LENGTH_SHORT).show();
         }
     }
 

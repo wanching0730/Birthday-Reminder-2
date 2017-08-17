@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SpinnerAdapter;
+import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
 import com.wanching.birthdayreminder.Others.Person;
 import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
@@ -161,9 +162,9 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
         int count = 0;
 
-        if(MainActivity.arrayList != null){
-            while(count < MainActivity.arrayList.size()){
-                String newMessage = MainActivity.arrayList.get(count);
+        if(AddMEssageDialog.arrayList != null){
+            while(count < AddMEssageDialog.arrayList.size()){
+                String newMessage = AddMEssageDialog.arrayList.get(count);
                 arrayAdapter.add(newMessage);
                 count++;
             }
