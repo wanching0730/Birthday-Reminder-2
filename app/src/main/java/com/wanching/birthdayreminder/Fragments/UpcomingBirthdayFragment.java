@@ -1,10 +1,11 @@
 package com.wanching.birthdayreminder.Fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,26 +19,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
+import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
-import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 
 import java.util.Calendar;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Created by WanChing on 6/8/2017.
  */
+
 public class UpcomingBirthdayFragment extends Fragment {
 
     private ListView listView;
     private BirthdayCursorAdapter adapter;
     private TextView tvEmpty;
-   // public static final String EXTRA_ID_1 = "com.wanching.birthdayreminder.Birthdat.ID1";
+    private OnSetCountListener listener;
 
     public UpcomingBirthdayFragment() {
     }
@@ -52,20 +53,21 @@ public class UpcomingBirthdayFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Cursor cursor = (Cursor)adapterView.getItemAtPosition(position);
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 
                 Intent intent = new Intent(getContext(), ViewBirthdayActivity.class);
                 intent.putExtra("ID", cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID)));
-                startActivity(intent);}
+                startActivity(intent);
+            }
         });
 
-//        tvEmpty = getActivity().findViewById(R.id.empty_view);
-//        listView.setEmptyView(tvEmpty);
-//        tvEmpty.setText("No Birthday Record Found!");
+        tvEmpty = rootView.findViewById(R.id.empty_view);
+        listView.setEmptyView(tvEmpty);
+        tvEmpty.setText("No Birthday Record Found!");
 
         setHasOptionsMenu(true);
 
-        return  rootView;
+        return rootView;
     }
 
     @Override
@@ -76,8 +78,7 @@ public class UpcomingBirthdayFragment extends Fragment {
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
         String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
-        //String selection = BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " BETWEEN ? AND ? ";
-        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()), Long.toString(Calendar.getInstance().getTimeInMillis() + 259200000)};
+        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()), Long.toString(Calendar.getInstance().getTimeInMillis() + 172800000)};
 
         Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
         Log.v("upcoming cursor", "got cursor2");
@@ -85,9 +86,8 @@ public class UpcomingBirthdayFragment extends Fragment {
         adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);
         adapter.swapCursor(cursor);
         listView.setAdapter(adapter);
-//
-//        TextView tv = getActivity().findViewById(R.id.empty_view);
-//        listView.setEmptyView(tv);
+
+        listener.setCount(cursor.getCount());
     }
 
     @Override
@@ -103,9 +103,9 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         if (id == R.id.action_delete_all) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder .setCancelable(false)
+            builder.setCancelable(false)
                     .setMessage("Are you sure you want to delete all records?")
-                    .setPositiveButton("YES",new DialogInterface.OnClickListener(){
+                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
                             Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
@@ -127,5 +127,20 @@ public class UpcomingBirthdayFragment extends Fragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public interface OnSetCountListener {
+        void setCount(int count);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try{
+            listener = (OnSetCountListener) context;
+        }catch (ClassCastException ex){
+            throw new ClassCastException(context.toString() + " must implement OnSetCountListener");
+        }
     }
 }

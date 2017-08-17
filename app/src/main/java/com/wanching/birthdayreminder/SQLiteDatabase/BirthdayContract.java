@@ -9,15 +9,16 @@ import android.provider.BaseColumns;
 
 public class BirthdayContract {
 
-    public BirthdayContract(){}
+    public BirthdayContract() {
+    }
 
-    public static class BirthdayEntry implements BaseColumns{
-        public static final String TABLE_NAME="birthday";
-        public static final String COLUMN_NAME_NAME="name";
-        public static final String COLUMN_NAME_EMAIL="email";
-        public static final String COLUMN_NAME_PHONE="phone";
-        public static final String COLUMN_NAME_DATE="date";
-        public static final String COLUMN_NAME_IMAGE="image";
-        public static final String COLUMN_NAME_NOTIFY="notify";
+    public static class BirthdayEntry implements BaseColumns {
+        public static final String TABLE_NAME = "birthday";
+        public static final String COLUMN_NAME_NAME = "name";
+        public static final String COLUMN_NAME_EMAIL = "email";
+        public static final String COLUMN_NAME_PHONE = "phone";
+        public static final String COLUMN_NAME_DATE = "date";
+        public static final String COLUMN_NAME_IMAGE = "image";
+        public static final String COLUMN_NAME_NOTIFY = "notify";
     }
 }

@@ -1,9 +1,19 @@
 <resources>
     <string name="app_name">Birthday Reminder</string>
+
     <string name="action_delete_all">Delete All</string>
     <string name="action_refresh">Refresh</string>
-    <string name="action_backup">Backup Data</string>
+    <string name="action_setting">Setting</string>
+    <string name="action_add_wishes">Add Wishes</string>
+    <string name="action_backup_data">Backup Data</string>
+
     <string name="title_activity_update_birthday">UpdateBirthdayActivity</string>
+    <string name="title_activity_upcoming_birthday">UpcomingBirthday</string>
+    <string name="title_activity_all_birthday">AllBirthdayActivity</string>
+    <string name="title_activity_add_birthday">AddBirthdayActivity</string>
+    <string name="title_upcoming_tab">Upcoming</string>
+
+
     <string name="name">Name</string>
     <string name="email_address">Email Address</string>
     <string name="bithday_date">Birthday</string>
@@ -13,12 +23,18 @@
     <string name="delete_all">Delete All</string>
     <string name="birthday_wish">Happy Birthday</string>
     <string name="add_photo">Add a photo here</string>
-    <string name="title_activity_upcoming_birthday">UpcomingBirthday</string>
-    <string name="title_activity_all_birthday">AllBirthdayActivity</string>
-    <string name="title_activity_add_birthday">AddBirthdayActivity</string>
     <string name="open_drawer">Drawer opened</string>
     <string name="close_drawer">Drawer closed</string>
     <string name="profile_name">WC</string>
     <string name="user_name">WanChing Teoh</string>
     <string name="account_email">wanching_97@hotmail.com</string>
+
+    <string name="back_data_message">data had backup successfully</string>
+
+    <string name="wishes_dialog_title">Select a message to wish %s</string>
+    <string name="new_wishes_dialog_title">Add new wish</string>
+    <string name="first_wish">Happy Birthday</string>
+    <string name="second_wish">Good Luck</string>
+    <string name="third_wish">Stay happy</string>
+
 </resources>

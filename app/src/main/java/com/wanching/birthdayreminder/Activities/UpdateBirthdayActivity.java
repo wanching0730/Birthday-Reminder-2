@@ -25,9 +25,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+/**
+ * Created by WanChing on 6/8/2017.
+ */
+
 public class UpdateBirthdayActivity extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 1;
+    private static Bitmap bitmap;
     private Person person;
     private Date formattedDate;
     private EditText etName;
@@ -35,7 +41,6 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
     private EditText etPhone;
     private EditText etDate;
     private ImageView ivImage;
-    private static Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

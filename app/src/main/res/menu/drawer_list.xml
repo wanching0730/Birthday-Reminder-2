@@ -4,28 +4,22 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/inbox"
+            android:id="@+id/setting"
             android:checked="false"
-            android:icon="@android:drawable/ic_menu_save"
-            android:title="SAVE" />
+            android:icon="@drawable/setting"
+            android:title="@string/action_setting" />
 
         <item
-            android:id="@+id/starred"
+            android:id="@+id/add_wishes"
             android:checked="false"
-            android:icon="@android:drawable/ic_menu_delete"
-            android:title="DELETE" />
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="@string/action_add_wishes" />
 
         <item
-            android:id="@+id/sent_mail"
+            android:id="@+id/drawer_backup_data"
             android:checked="false"
-            android:icon="@android:drawable/ic_input_add"
-            android:title="ADD" />
-
-        <item
-            android:id="@+id/drafts"
-            android:checked="false"
-            android:icon="@android:drawable/ic_menu_edit"
-            android:title="EDIT" />
+            android:icon="@drawable/backup"
+            android:title="@string/action_backup_data" />
 
     </group>
 

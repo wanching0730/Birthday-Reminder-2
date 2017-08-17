@@ -16,18 +16,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
-import com.wanching.birthdayreminder.Others.Conversion;
 import com.wanching.birthdayreminder.Fragments.DatePickerFragment;
+import com.wanching.birthdayreminder.Others.Conversion;
 import com.wanching.birthdayreminder.Others.Person;
 import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+/**
+ * Created by WanChing on 6/8/2017.
+ */
 
 public class AddBirthdayActivity extends AppCompatActivity {
 
@@ -76,22 +80,22 @@ public class AddBirthdayActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(bitmap == null) {
+                if (bitmap == null) {
                     Toast.makeText(AddBirthdayActivity.this, "Please select an image to proceed", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select an option to insert image"), SELECT_IMAGE);
-                }else {
-                    try{
+                } else {
+                    try {
                         String name = etName.getText().toString();
                         String email = etEmail.getText().toString();
                         String phone = etPhone.getText().toString();
                         String date = etDate.getText().toString();
 
-                        if(name.matches("") && email.matches("") && phone.matches("")){
+                        if (name.matches("") && email.matches("") && phone.matches("")) {
                             Toast.makeText(AddBirthdayActivity.this, "Please enter all details to proceed", Toast.LENGTH_SHORT).show();
-                        }else{
+                        } else {
                             SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH);
                             newDate = formatter.parse(date);
 
@@ -105,7 +109,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
                                 finish();
                             }
                         }
-                    }catch (ParseException ex){
+                    } catch (ParseException ex) {
                         ex.printStackTrace();
                         Toast.makeText(AddBirthdayActivity.this, "Please select a date", Toast.LENGTH_SHORT).show();
                     }
@@ -115,13 +119,13 @@ public class AddBirthdayActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if(resultCode == RESULT_OK){
-            if(requestCode == SELECT_IMAGE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
                 bitmap = null;
-                if(intent != null){
-                    try{
+                if (intent != null) {
+                    try {
                         bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), intent.getData());
-                    }catch (IOException ex){
+                    } catch (IOException ex) {
                         Log.wtf("Ioexception", ex);
                     }
                 }
@@ -131,7 +135,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
         }
     }
 
-    public void SetDate(View view){
+    public void SetDate(View view) {
         DialogFragment fragment = new DatePickerFragment();
         fragment.show(getSupportFragmentManager(), "datePicker");
     }
@@ -139,10 +143,9 @@ public class AddBirthdayActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        if(saved){
+        if (saved) {
             editor.clear();
-        }
-        else{
+        } else {
             String name = etName.getText().toString();
             String email = etEmail.getText().toString();
             String phone = etPhone.getText().toString();
@@ -153,7 +156,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
             editor.putString("SAVE_STATE_PHONE", phone);
             editor.putString("SAVE_STATE_DATE", date);
 
-            if(bitmap != null)
+            if (bitmap != null)
                 editor.putString("SAVE_STATE_IMAGE", conversion.encodeToBase64(bitmap));
         }
 
@@ -173,9 +176,9 @@ public class AddBirthdayActivity extends AppCompatActivity {
         etPhone.setText(phone);
         etDate.setText(date);
 
-        if(bitmap == null)
+        if (bitmap == null)
             ivImage.setImageResource(R.drawable.login);
-        else{
+        else {
             String image = sharedPreferences.getString("SAVE_STATE_IMAGE", "");
             ivImage.setImageBitmap(conversion.decodeToBase64(image));
         }

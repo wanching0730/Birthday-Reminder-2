@@ -15,17 +15,17 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**
- * Created by WanChing on 5/8/2017.
+ * Created by WanChing on 6/8/2017.
  */
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     public static Calendar cal = null;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if(cal == null){
+        if (cal == null) {
             cal = Calendar.getInstance();
         }
 
@@ -35,7 +35,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
 
-        return  dialog;
+        return dialog;
     }
 
     @Override

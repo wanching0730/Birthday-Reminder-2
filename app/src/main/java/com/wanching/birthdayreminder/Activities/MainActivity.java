@@ -1,30 +1,63 @@
 package com.wanching.birthdayreminder.Activities;
 
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
+import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
+import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
+import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
+import com.wanching.birthdayreminder.Others.BackupDataTask;
+import com.wanching.birthdayreminder.R;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
 
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
-    FragmentManager fm;
-    FragmentTransaction ft;
+import java.util.ArrayList;
+
+/**
+ * Created by WanChing on 6/8/2017.
+ */
+
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>, UpcomingBirthdayFragment.OnSetCountListener, AllBirthdayActivityFragment.OnRereshFragmentListener {
+
+    private final static int LOADER_ID = 0;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+    private TabLayout tabLayout;
+    private SimpleFragmentPagerAdapter adapter;
+
+    //public static ArrayList<String> arrayList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        SimpleFragmentPagerAdapter adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
+        adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
+        tabLayout = (TabLayout) findViewById(R.id.tab);
         tabLayout.setupWithViewPager(viewPager);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -44,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
-                if(intent.resolveActivity(getPackageManager()) != null)
+                if (intent.resolveActivity(getPackageManager()) != null)
                     startActivity(intent);
             }
         });
@@ -56,17 +89,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if(item.getItemId() == R.id.starred){
-                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
-                    startActivity(intent);
+                if (item.getItemId() == R.id.setting) {
+//                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
+//                    startActivity(intent);
                 }
 
-                if(item.getItemId() == R.id.sent_mail){
-
-
+                if (item.getItemId() == R.id.add_wishes) {
+                    AddMEssageDialog dialog = new AddMEssageDialog();
+                    dialog.show(getSupportFragmentManager(), "AddNewMessageDialog");
                 }
 
-                return false;
+                if(item.getItemId() == R.id.drawer_backup_data){
+                    backUpData();
+                }
+
+                return true;
             }
         });
 
@@ -74,43 +111,69 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
-    //@Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_delete_all) {
-//            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//            builder .setCancelable(false)
-//                    .setMessage("Are you sure you want to delete all records?")
-//                    .setPositiveButton("YES",new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
-//                            dbq.deleteAll();
-//                            Toast.makeText(getApplicationContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
-//                            onResume();
-//                        }
-//                    })
-//                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialogInterface.cancel();
-//                        }
-//                    });
-//            AlertDialog alert = builder.create();
-//            alert.setTitle("WARNING");
-//            alert.show();
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_backup) {
+            backUpData();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader onCreateLoader(int i, Bundle bundle) {
+        return new BackupDataTask(MainActivity.this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<JSONObject> loader, JSONObject response) {
+        View parentLayout = findViewById(android.R.id.content);
+        Snackbar.make(parentLayout, outputMessage(response), Snackbar.LENGTH_LONG).show();
+        Log.v("data synced", response.toString());
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+    }
+
+    public String outputMessage(JSONObject response) {
+        try {
+            return Integer.toString(response.getInt("recordsSynced")) + " " + getResources().getString(R.string.back_data_message);
+        } catch (JSONException ex) {
+            Log.e("JSONEXCEPTION", ex.toString());
+            return null;
+        }
+    }
+
+    private void backUpData (){
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
+        } else {
+            Toast.makeText(MainActivity.this, "Network is unavaiable", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void setCount(int count) {
+        tabLayout.getTabAt(0).setText(getResources().getString(R.string.title_upcoming_tab) + " (" + count + ")");
+    }
+
+    @Override
+    public void refreshFragment() {
+        adapter.getTargetFragment(0).onResume();
+    }
 }
