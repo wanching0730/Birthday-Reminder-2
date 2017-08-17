@@ -4,8 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Telephony;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -137,11 +139,25 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
     public void messageWish(View view) {
 
-        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-        smsIntent.setType("vnd.android-dir/mms-sms");
-        smsIntent.putExtra("address", person.getPhone());
-        smsIntent.putExtra("sms_body", "happy birthday");
-        startActivity(smsIntent);
+//        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+//        smsIntent.setType("vnd.android-dir/mms-sms");
+//        smsIntent.putExtra("address", person.getPhone());
+//        smsIntent.putExtra("sms_body", "happy birthday");
+//        if(smsIntent.resolveActivity(getPackageManager()) != null)
+//            startActivity(smsIntent);
+
+        String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext());
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(person.getPhone().toString())));
+        intent.putExtra("sms_body", "happy birthday");
+
+        // Can be null in case that there is no default, then the user would be able to choose any app that supports this intent.
+        if (defaultSmsPackageName != null)
+        {
+            intent.setPackage(defaultSmsPackageName);
+        }
+
+        startActivity(intent);
     }
 
     public void deleteBirthday(View view) {
