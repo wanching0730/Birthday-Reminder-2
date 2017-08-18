@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
     private String subString;
     private BirthdayCursorAdapter adapter;
     private OnRereshFragmentListener listener;
+    private ProgressBar progressBar;
 
     public AllBirthdayActivityFragment() {
     }
@@ -63,7 +65,12 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_birthday, container, false);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
         listView = rootView.findViewById(R.id.birthday_list_view);
+
+
+        tvEmpty = rootView.findViewById(R.id.empty_view);
+        listView.setEmptyView(tvEmpty);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,9 +83,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             }
         });
 
-        tvEmpty = rootView.findViewById(R.id.empty_view);
-        listView.setEmptyView(tvEmpty);
-        tvEmpty.setText("No Birthday Record Found!");
 
         //to display the menu in fragment
         setHasOptionsMenu(true);
@@ -94,8 +98,6 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     public void onResume() {
         super.onResume();
-
-        //setUpNptification();
 
         adapter = new BirthdayCursorAdapter(getContext(), null, 0);
         listView.setAdapter(adapter);
@@ -181,6 +183,8 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        progressBar.setVisibility(View.GONE);
+        tvEmpty.setText("No Birthday Record Found!");
         adapter.swapCursor(data);
         tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();

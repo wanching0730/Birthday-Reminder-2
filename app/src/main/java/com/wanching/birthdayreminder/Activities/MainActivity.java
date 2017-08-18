@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
 
         tabLayout = (TabLayout) findViewById(R.id.tab);
         tabLayout.setupWithViewPager(viewPager);

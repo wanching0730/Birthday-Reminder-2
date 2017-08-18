@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class UpcomingBirthdayFragment extends Fragment {
     private BirthdayCursorAdapter adapter;
     private TextView tvEmpty;
     private OnSetCountListener listener;
+    private ProgressBar progressBar;
 
     public UpcomingBirthdayFragment() {
     }
@@ -53,6 +55,8 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_upcoming_birthday, container, false);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
         listView = rootView.findViewById(R.id.birthday_list_view);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
