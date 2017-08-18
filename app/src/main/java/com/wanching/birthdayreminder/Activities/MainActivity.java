@@ -121,9 +121,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-//        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
-//        Cursor cursor = dbq.retrieveTodayBirthday();
-//        Log.v("database noti", cursor.getCount() + "");
+        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
+        Cursor cursor = dbq.retrieveTodayBirthday();
+        Log.v("database noti", cursor.getCount() + "");
     }
 
     @Override
