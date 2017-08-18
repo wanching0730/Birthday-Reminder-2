@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Account Preference">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="Change username"
+            android:defaultValue="true"/>
+
+        <EditTextPreference
+            android:title="Username"
+            android:key="@+id/username"
+            android:summary="Change new username"
+            android:defaultValue="yo"
+            android:dependency="checkbox_preference">
+        </EditTextPreference>
+
+        <EditTextPreference android:title="Email Address"
+            android:key="@string/email_address"
+            android:summary="Change new email address">
+        </EditTextPreference>
+
+        <CheckBoxPreference
+            android:key="checkbox_preference_1"
+            android:title="check"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Actions">
+
+        <ListPreference
+            android:key="list_preference"
+            android:title="list items"
+            android:dialogTitle="select one"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues" />
+
+        <Preference
+            android:title="anything">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://codepath.com/" />
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

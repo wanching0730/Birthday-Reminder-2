@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -30,6 +32,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
@@ -58,9 +62,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private FragmentManager fm;
     private FragmentTransaction ft;
     private TabLayout tabLayout;
+
     private SimpleFragmentPagerAdapter adapter;
+    private SharedPreferences sharedPreferences;
 
     public static ArrayList<String> arrayList;
+    public static TextView tvUsername;
+    public static String username;
+    public static String defaultValue;
 
     //public static ArrayList<String> arrayList;
 
@@ -74,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setUpNptification();
 
         arrayList = new ArrayList<>();
+        defaultValue = getResources().getString(R.string.user_name);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         adapter = new SimpleFragmentPagerAdapter(this, getSupportFragmentManager());
@@ -95,13 +105,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+
+        View headerView = navigationView.getHeaderView(0);
+        tvUsername = headerView.findViewById(R.id.textView);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 if (item.getItemId() == R.id.setting) {
-//                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
-//                    startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), MyPreferenceActivity.class);
+                    startActivity(intent);
                 }
 
                 if (item.getItemId() == R.id.add_wishes) {
@@ -122,11 +136,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         toggle.syncState();
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        setUpNptification();
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(sharedPreferences != null) {
+            String username = sharedPreferences.getString("username", "yo");
+            Log.v("username", username);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -206,5 +224,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+    }
+
+    private void changeUsername(){
+        if(sharedPreferences.getBoolean("checkbox_preference", true)){
+            username= sharedPreferences.getString("username", "yo");
+            tvUsername.setText(username);
+        }else {
+            tvUsername.setText(R.string.user_name);
+        }
     }
 }
