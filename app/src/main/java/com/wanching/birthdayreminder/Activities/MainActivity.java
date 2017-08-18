@@ -21,17 +21,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
@@ -41,10 +36,8 @@ import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
-import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,13 +120,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-    }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        setUpNptification();
-//    }
+        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
+        Cursor cursor = dbq.retrieveTodayBirthday();
+        Log.v("database noti", cursor.getCount() + "");
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -143,9 +134,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_backup) {
@@ -202,39 +190,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void setUpNptification(){
 
-//        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
-//        Calendar cal = Calendar.getInstance();
-//        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
-//        String[] selectionArgs = {Long.toString(cal.getTimeInMillis()-86400000), Long.toString(cal.getTimeInMillis()-86400000) };
-//        Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
-//
-//        Log.v("cursor_count", cursor.getCount() + "");
-//        Log.v("now", cal.getTimeInMillis() + "");
+        AlarmManager alarmManager;
 
+        Calendar calendar = Calendar.getInstance();
+        Calendar now = Calendar.getInstance();
+        Date date = new Date();
+        now.setTime(date);
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 00);
+        calendar.set(Calendar.SECOND, 00);
 
-            AlarmManager alarmManager;
+        if(calendar.before(now)){
+            calendar.add(Calendar.DATE, 1);
+        }
 
-            Calendar calendar = Calendar.getInstance();
-            Calendar now = Calendar.getInstance();
-            Date date = new Date();
-            now.setTime(date);
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.set(Calendar.HOUR_OF_DAY, 8);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 1);
+        Intent intent = new Intent(this, MyReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
-            if(calendar.before(now)){
-                calendar.add(Calendar.DATE, 1);
-            }
-//        if(cursor.getCount() > 0){
-            Intent intent = new Intent(this, MyReceiver.class);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        Log.v("alarm started", "alarm");
 
-            Log.v("alarm started", "alarm");
-
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
-      //  }
-
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
     }
 }

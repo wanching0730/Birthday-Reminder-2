@@ -85,6 +85,7 @@
     </LinearLayout>
 
     <Switch
+        android:id="@+id/notification"
         android:text="@string/notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

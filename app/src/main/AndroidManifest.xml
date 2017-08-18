@@ -44,7 +44,10 @@
             android:name=".Activities.AddBirthdayActivity"
             android:label="@string/title_activity_add_birthday"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.TodayBirthdayActivity"></activity>
+        <activity
+            android:name=".Activities.TodayBirthdayActivity"
+            android:label="@string/title_activity_today_birthday">
+        </activity>
     </application>
 
 </manifest>

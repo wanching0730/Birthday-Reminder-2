@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import com.wanching.birthdayreminder.Others.Person;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 import java.util.Date;
 
 public class BirthdayDbQueries {
@@ -87,7 +88,7 @@ public class BirthdayDbQueries {
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_PHONE, person.getPhone());
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE, convertToByteArray(person));
         values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE, person.getBirthdayAsCalendar().getTimeInMillis());
-        values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY, person.isNotify());
+        values.put(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY, changeInt(person.isNotify()));
 
         return values;
     }
@@ -108,8 +109,32 @@ public class BirthdayDbQueries {
         return person;
     }
 
+    public Cursor retrieveTodayBirthday(){
+        Calendar cal = Calendar.getInstance();
+        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch') AND " + BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY + " = ?";
+        String[] selectionArgs = {Long.toString(cal.getTimeInMillis()-86400000), Long.toString(cal.getTimeInMillis()-86400000), "1"};
+        Cursor cursor = read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+
+        return cursor;
+    }
+
+//    public Cursor retrieveTodayBirthday1(){
+//        Calendar cal = Calendar.getInstance();
+//        String selection = BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY + " = '1'";
+//        Cursor cursor = read(DbColumns.columns, selection, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+//
+//        return cursor;
+//    }
+
     private static boolean changeBoolean(int notify) {
         return notify > 0;
+    }
+
+    private static int changeInt (boolean notify){
+        if(notify)
+            return 1;
+        else
+            return 0;
     }
 
 

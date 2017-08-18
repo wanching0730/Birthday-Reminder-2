@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Fragments.DatePickerFragment;
@@ -42,6 +43,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
     private EditText etDate;
     private Date newDate;
     private ImageView ivImage;
+    private Switch swNotification;
     private Bitmap bitmap = null;
     private boolean saved = false;
     private Conversion conversion;
@@ -64,6 +66,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
         etPhone = (EditText) findViewById(R.id.add_phone);
         ivImage = (ImageView) findViewById(R.id.person_image);
         etDate = (EditText) findViewById(R.id.date_selection);
+        swNotification = (Switch) findViewById(R.id.notification);
 
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,15 +95,16 @@ public class AddBirthdayActivity extends AppCompatActivity {
                         String email = etEmail.getText().toString();
                         String phone = etPhone.getText().toString();
                         String date = etDate.getText().toString();
+                        Boolean notification = swNotification.isChecked();
 
-                        if (name.matches("") && email.matches("") && phone.matches("")) {
+                        if (name.matches("") || email.matches("") || phone.matches("")) {
                             Toast.makeText(AddBirthdayActivity.this, "Please enter all details to proceed", Toast.LENGTH_SHORT).show();
                         } else {
                             SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH);
                             newDate = formatter.parse(date);
 
                             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
-                            Person person = new Person(0, name, email, phone, bitmap, newDate, false);
+                            Person person = new Person(0, name, email, phone, bitmap, newDate, notification);
 
                             if (dbq.insert(person) != 0) {
                                 saved = true;
@@ -150,11 +154,13 @@ public class AddBirthdayActivity extends AppCompatActivity {
             String email = etEmail.getText().toString();
             String phone = etPhone.getText().toString();
             String date = etDate.getText().toString();
+            Boolean notification = swNotification.isChecked();
 
             editor.putString("SAVE_STATE_NAME", name);
             editor.putString("SAVE_STATE_EMAIL", email);
             editor.putString("SAVE_STATE_PHONE", phone);
             editor.putString("SAVE_STATE_DATE", date);
+            editor.putBoolean("SAVE_STATE_NOTIFICATION", notification);
 
             if (bitmap != null)
                 editor.putString("SAVE_STATE_IMAGE", conversion.encodeToBase64(bitmap));
@@ -170,11 +176,13 @@ public class AddBirthdayActivity extends AppCompatActivity {
         String email = sharedPreferences.getString("SAVE_STATE_EMAIL", "");
         String phone = sharedPreferences.getString("SAVE_STATE_PHONE", "");
         String date = sharedPreferences.getString("SAVE_STATE_DATE", "");
+        Boolean notification = sharedPreferences.getBoolean("SAVE_STATE_NOTIFICATION", false);
 
         etName.setText(name);
         etEmail.setText(email);
         etPhone.setText(phone);
         etDate.setText(date);
+        swNotification.setChecked(notification);
 
         if (bitmap == null)
             ivImage.setImageResource(R.drawable.login);

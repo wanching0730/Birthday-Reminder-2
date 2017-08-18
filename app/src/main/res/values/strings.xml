@@ -7,10 +7,11 @@
     <string name="action_add_wishes">Add Wishes</string>
     <string name="action_backup_data">Backup Data</string>
 
-    <string name="title_activity_update_birthday">UpdateBirthdayActivity</string>
-    <string name="title_activity_upcoming_birthday">UpcomingBirthday</string>
-    <string name="title_activity_all_birthday">AllBirthdayActivity</string>
-    <string name="title_activity_add_birthday">AddBirthdayActivity</string>
+    <string name="title_activity_update_birthday">Update Birthday</string>
+    <string name="title_activity_upcoming_birthday">Upcoming Birthday</string>
+    <string name="title_activity_all_birthday">All Birthday</string>
+    <string name="title_activity_add_birthday">Add Birthday</string>
+    <string name="title_activity_today_birthday">Today Birthday</string>
     <string name="title_upcoming_tab">Upcoming</string>
 
 
@@ -41,6 +42,5 @@
 
 
     <string name="notification_content_title">Today birthday list</string>
-    <string name="notification_content_text">() people birthday today</string>
-    <string name="title_activity_today_birthday">TodayBirthdayActivity</string>
+    <string name="notification_content_text">%d people birthday today</string>
 </resources>

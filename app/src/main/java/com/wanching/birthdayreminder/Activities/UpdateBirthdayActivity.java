@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Fragments.DatePickerFragment;
@@ -41,6 +42,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
     private EditText etPhone;
     private EditText etDate;
     private ImageView ivImage;
+    private Switch swNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +61,14 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         etPhone = (EditText) findViewById(R.id.add_phone);
         etDate = (EditText) findViewById(R.id.date_selection);
         ivImage = (ImageView) findViewById(R.id.person_image);
+        swNotification = (Switch) findViewById(R.id.notification);
 
         etName.setText(person.getName());
         etEmail.setText(person.getEmail());
         etPhone.setText(person.getPhone());
         etDate.setText(new SimpleDateFormat("EEEE, MMMM d, yyyy").format(person.getBirthday()));
         ivImage.setImageBitmap(bitmap);
+        swNotification.setChecked(person.isNotify());
 
         Log.v("birthdy", person.getBirthday().getTime() + "");
 
@@ -95,6 +99,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
                 person.setPhone(etPhone.getText().toString());
                 person.setBirtday(formattedDate);
                 person.setImage(bitmap);
+                person.setNotify(swNotification.isChecked());
 
                 BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
                 dbq.update(person);

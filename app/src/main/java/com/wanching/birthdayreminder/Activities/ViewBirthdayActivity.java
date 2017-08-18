@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,10 +85,13 @@ public class ViewBirthdayActivity extends AppCompatActivity {
             TextView tvPhone = (TextView) findViewById(R.id.show_phone);
             TextView tvDate = (TextView) findViewById(R.id.date);
             TextView tvLeft = (TextView) findViewById(R.id.left);
+            Switch swNotification = (Switch) findViewById(R.id.view_switch);
 
             tvEmail.setText("Email: " + person.getEmail());
             tvPhone.setText("Phone: " + person.getPhone());
             tvLeft.setText("Left");
+            swNotification.setChecked(person.isNotify());
+            swNotification.setClickable(false);
 
             Calendar today = Calendar.getInstance();
             Calendar annualBirthday = person.getThisYearBirthday();

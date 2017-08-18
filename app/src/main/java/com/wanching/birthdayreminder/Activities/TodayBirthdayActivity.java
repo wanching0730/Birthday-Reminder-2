@@ -26,26 +26,28 @@ public class TodayBirthdayActivity extends AppCompatActivity {
     private BirthdayCursorAdapter adapter;
     private TextView tvEmpty;
     private RelativeLayout rl;
-    private Cursor cursor;
+    private BirthdayDbQueries dbq;
+//    private Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_birthday);
 
-        NotificationManager mNotificationManager = (NotificationManager)
-                getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.cancelAll();
 
-        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
-        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " == strftime('%m-%d',?/1000, 'unixepoch')";
-        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis())};
-        cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+        dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
+
+//        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
+//        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " == strftime('%m-%d',?/1000, 'unixepoch')";
+//        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis())};
+//        cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
 
 
         rl = (RelativeLayout) findViewById(R.id.view_relative_layout);
         listView = (ListView) findViewById(R.id.today_birthday_list);
-        adapter = new BirthdayCursorAdapter(this, cursor, 0);
+        adapter = new BirthdayCursorAdapter(this, dbq.retrieveTodayBirthday(), 0);
         listView.setAdapter(adapter);
 
         tvEmpty = rl.findViewById(R.id.today_empty_view);
@@ -56,7 +58,7 @@ public class TodayBirthdayActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.swapCursor(cursor);
+        adapter.swapCursor(dbq.retrieveTodayBirthday());
         tvEmpty.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
     }

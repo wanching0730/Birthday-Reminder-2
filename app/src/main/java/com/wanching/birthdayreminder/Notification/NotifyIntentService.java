@@ -26,49 +26,42 @@ import java.util.Calendar;
 public class NotifyIntentService extends IntentService {
 
     private static final int NOTIFICTION_ID = 1;
-    private Cursor cursor;
+    private BirthdayDbQueries dbq;
 
     public NotifyIntentService(){
         super("NotifyIntentService");
     }
 
-
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
-        Calendar cal = Calendar.getInstance();
-        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
-        String[] selectionArgs = {Long.toString(cal.getTimeInMillis()-86400000), Long.toString(cal.getTimeInMillis()-86400000) };
-        Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+        dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
 
-        Log.v("cursor_count", cursor.getCount() + "");
-        Log.v("now", cal.getTimeInMillis() + "");
+//        Log.v("cursor_count", cursor.getCount() + "");
+//        Log.v("now", cal.getTimeInMillis() + "");
 
-        if(cursor.getCount() > 0) {
-            Notification.Builder builder = new Notification.Builder(this);
-            builder.setContentTitle(getResources().getString(R.string.notification_content_title));
-            builder.setContentText(getResources().getString(R.string.notification_content_text));
-            builder.setAutoCancel(true);
-            builder.setSmallIcon(R.drawable.cake);
-
-            Log.v("notification started", "notification");
-
-
-            Intent listBirthdayIntent = new Intent(this, TodayBirthdayActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, listBirthdayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            builder.setContentIntent(pendingIntent);
-            Notification notification = builder.build();
-            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-            managerCompat.notify(NOTIFICTION_ID, notification);
-
-            builder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
+        if(dbq.retrieveTodayBirthday().getCount() > 0) {
+            startNotificationService();
         }
+    }
 
+    private void startNotificationService(){
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setContentTitle(getResources().getString(R.string.notification_content_title));
+        builder.setContentText(String.format(getString(R.string.notification_content_text), dbq.retrieveTodayBirthday().getCount()));
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.cake);
 
+        Log.v("notification started", "notification");
 
+        Intent listBirthdayIntent = new Intent(this, TodayBirthdayActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, listBirthdayIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        builder.setContentIntent(pendingIntent);
+        Notification notification = builder.build();
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(NOTIFICTION_ID, notification);
 
+        builder.getNotification().flags |= Notification.FLAG_AUTO_CANCEL;
     }
 }
