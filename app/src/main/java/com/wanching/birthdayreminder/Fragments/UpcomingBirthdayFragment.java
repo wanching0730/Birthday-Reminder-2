@@ -118,6 +118,7 @@ public class UpcomingBirthdayFragment extends Fragment {
                             Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
                             dbq.deleteAll();
                             adapter.swapCursor(cursor);
+                            cursor.close();
                             Toast.makeText(getContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
                             onResume();
                         }

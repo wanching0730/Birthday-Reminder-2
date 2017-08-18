@@ -191,5 +191,4 @@ public class AddBirthdayActivity extends AppCompatActivity {
             ivImage.setImageBitmap(conversion.decodeToBase64(image));
         }
     }
-
 }

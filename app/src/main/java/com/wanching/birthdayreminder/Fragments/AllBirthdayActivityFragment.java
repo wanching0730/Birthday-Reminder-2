@@ -234,20 +234,5 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             return cursor;
         }
     }
-
-//    private void setUpNptification(){
-//
-//        AlarmManager alarmManager;
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY, 8);
-//        calendar.set(Calendar.MINUTE, 0);
-//        calendar.set(Calendar.SECOND, 1);
-//
-//        Intent intent = new Intent(getContext(), MyReceiver.class);
-//        PendingIntent alarmIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
-//        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
-//    }
 }
 

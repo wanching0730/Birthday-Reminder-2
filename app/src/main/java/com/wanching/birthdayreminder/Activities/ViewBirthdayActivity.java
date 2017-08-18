@@ -130,6 +130,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
             Log.e("id not found", Long.toString(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry._ID))));
             finish();
         }
+        cursor.close();
     }
 
     public void onTickCalculation(long millisUntilFinished) {

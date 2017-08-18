@@ -105,7 +105,7 @@ public class BirthdayDbQueries {
                 new Date(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE))),
                 changeBoolean(cursor.getInt(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY)))
         );
-
+        cursor.close();
         return person;
     }
 
@@ -114,6 +114,7 @@ public class BirthdayDbQueries {
         String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch') AND " + BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY + " = ?";
         String[] selectionArgs = {Long.toString(cal.getTimeInMillis()-86400000), Long.toString(cal.getTimeInMillis()-86400000), "1"};
         Cursor cursor = read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+        cursor.close();
 
         return cursor;
     }
