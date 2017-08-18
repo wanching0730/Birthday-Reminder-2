@@ -66,6 +66,8 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         etDate.setText(new SimpleDateFormat("EEEE, MMMM d, yyyy").format(person.getBirthday()));
         ivImage.setImageBitmap(bitmap);
 
+        Log.v("birthdy", person.getBirthday().getTime() + "");
+
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

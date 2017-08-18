@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <item
+    android:id="@+id/group1"
+    android:title="Account Preference">
+
+    <menu>
 
         <item
-            android:id="@+id/setting"
+            android:id="@+id/change_username"
             android:checked="false"
-            android:icon="@drawable/setting"
+            android:icon="@drawable/username"
             android:title="@string/action_setting" />
 
         <item
@@ -20,7 +24,38 @@
             android:checked="false"
             android:icon="@drawable/backup"
             android:title="@string/action_backup_data" />
+    </menu>
 
-    </group>
+</item>
+
+    <item
+        android:id="@+id/group2"
+        android:title="Actions">
+
+        <menu>
+
+            <item
+                android:id="@+id/g2"
+                android:checked="false"
+                android:icon="@drawable/setting"
+                android:title="@string/action_setting" />
+
+            <item
+                android:id="@+id/g3"
+                android:checked="false"
+                android:icon="@android:drawable/ic_menu_add"
+                android:title="@string/action_add_wishes" />
+
+            <item
+                android:id="@+id/g4"
+                android:checked="false"
+                android:icon="@drawable/backup"
+                android:title="@string/action_backup_data" />
+        </menu>
+
+    </item>
+
+
+
 
 </menu>

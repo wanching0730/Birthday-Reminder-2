@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
@@ -39,12 +41,17 @@ import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
+import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
+import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by WanChing on 6/8/2017.
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if (item.getItemId() == R.id.setting) {
+                if (item.getItemId() == R.id.add_wishes) {
 //                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
 //                    startActivity(intent);
                 }
@@ -195,16 +202,39 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void setUpNptification(){
 
-        AlarmManager alarmManager;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 8);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 1);
+//        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
+//        Calendar cal = Calendar.getInstance();
+//        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
+//        String[] selectionArgs = {Long.toString(cal.getTimeInMillis()-86400000), Long.toString(cal.getTimeInMillis()-86400000) };
+//        Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+//
+//        Log.v("cursor_count", cursor.getCount() + "");
+//        Log.v("now", cal.getTimeInMillis() + "");
 
-        Intent intent = new Intent(this, MyReceiver.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+
+            AlarmManager alarmManager;
+
+            Calendar calendar = Calendar.getInstance();
+            Calendar now = Calendar.getInstance();
+            Date date = new Date();
+            now.setTime(date);
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 1);
+
+            if(calendar.before(now)){
+                calendar.add(Calendar.DATE, 1);
+            }
+//        if(cursor.getCount() > 0){
+            Intent intent = new Intent(this, MyReceiver.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+            Log.v("alarm started", "alarm");
+
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
+      //  }
+
     }
 }

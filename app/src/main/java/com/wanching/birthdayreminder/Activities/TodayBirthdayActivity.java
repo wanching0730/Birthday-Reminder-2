@@ -39,8 +39,9 @@ public class TodayBirthdayActivity extends AppCompatActivity {
 
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
         String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " == strftime('%m-%d',?/1000, 'unixepoch')";
-        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis()- 86400000)};
+        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis())};
         cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+
 
         rl = (RelativeLayout) findViewById(R.id.view_relative_layout);
         listView = (ListView) findViewById(R.id.today_birthday_list);
