@@ -105,7 +105,7 @@ public class BirthdayDbQueries {
                 new Date(cursor.getLong(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE))),
                 changeBoolean(cursor.getInt(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY)))
         );
-        cursor.close();
+
         return person;
     }
 
