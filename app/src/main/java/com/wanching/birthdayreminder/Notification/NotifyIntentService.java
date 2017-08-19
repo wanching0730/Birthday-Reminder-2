@@ -51,7 +51,7 @@ public class NotifyIntentService extends IntentService {
         builder.setContentTitle(getString(R.string.notification_content_title))
         .setContentText(String.format(getString(R.string.notification_content_text), dbq.retrieveTodayBirthday().getCount()))
         .setAutoCancel(true)
-        .setSmallIcon(R.drawable.cake_white)
+        .setSmallIcon(R.drawable.launcher)
         .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
         Log.v("notification started", "notification");
