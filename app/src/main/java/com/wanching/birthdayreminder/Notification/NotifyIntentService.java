@@ -47,10 +47,11 @@ public class NotifyIntentService extends IntentService {
 
     private void startNotificationService(){
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle(getResources().getString(R.string.notification_content_title));
-        builder.setContentText(String.format(getString(R.string.notification_content_text), dbq.retrieveTodayBirthday().getCount()));
-        builder.setAutoCancel(true);
-        builder.setSmallIcon(R.drawable.cake);
+        builder.setContentTitle(getResources().getString(R.string.notification_content_title))
+        .setContentText(String.format(getString(R.string.notification_content_text), dbq.retrieveTodayBirthday().getCount()))
+        .setAutoCancel(true)
+        .setSmallIcon(R.drawable.cake)
+        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
         Log.v("notification started", "notification");
 
