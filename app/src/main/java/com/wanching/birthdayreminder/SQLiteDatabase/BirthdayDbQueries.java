@@ -150,7 +150,7 @@ public class BirthdayDbQueries {
     }
 
     /**
-     * Return a cursor of today birthday records
+     * Return a cursor of a list of person whose birthday is today and the notification status is TRUE
      * @return Cursor Row ID of a selected person
      */
     public Cursor retrieveTodayBirthday(){

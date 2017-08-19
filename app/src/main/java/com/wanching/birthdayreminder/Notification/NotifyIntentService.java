@@ -37,6 +37,7 @@ public class NotifyIntentService extends IntentService {
 
         dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
 
+        // Notification is sent only when there is at least one birthday record
         if(dbq.retrieveTodayBirthday().getCount() > 0) {
             startNotificationService();
         }
