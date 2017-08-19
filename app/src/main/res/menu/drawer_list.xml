@@ -11,19 +11,14 @@
             android:id="@+id/change_username"
             android:checked="false"
             android:icon="@drawable/username"
-            android:title="@string/action_setting" />
+            android:title="@string/drawer_username" />
 
         <item
-            android:id="@+id/add_wishes"
+            android:id="@+id/change_email"
             android:checked="false"
-            android:icon="@android:drawable/ic_menu_add"
-            android:title="@string/action_add_wishes" />
+            android:icon="@drawable/email"
+            android:title="@string/drawer_email" />
 
-        <item
-            android:id="@+id/drawer_backup_data"
-            android:checked="false"
-            android:icon="@drawable/backup"
-            android:title="@string/action_backup_data" />
     </menu>
 
 </item>
@@ -35,19 +30,19 @@
         <menu>
 
             <item
-                android:id="@+id/g2"
+                android:id="@+id/setting"
                 android:checked="false"
                 android:icon="@drawable/setting"
-                android:title="@string/action_setting" />
+                android:title="@string/drawer_setting" />
 
             <item
-                android:id="@+id/g3"
+                android:id="@+id/add_wishes"
                 android:checked="false"
                 android:icon="@android:drawable/ic_menu_add"
-                android:title="@string/action_add_wishes" />
+                android:title="@string/drawer_add_wishes" />
 
             <item
-                android:id="@+id/g4"
+                android:id="@+id/backup_data"
                 android:checked="false"
                 android:icon="@drawable/backup"
                 android:title="@string/action_backup_data" />

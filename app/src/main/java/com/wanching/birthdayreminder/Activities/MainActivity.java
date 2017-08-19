@@ -23,10 +23,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
-import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
+import com.wanching.birthdayreminder.Fragments.MultiTaskDialogFragment;
 import com.wanching.birthdayreminder.Fragments.AllBirthdayFragment;
 import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Notification.MyReceiver;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity
         AllBirthdayFragment.OnRereshFragmentListener {
 
     public static ArrayList<String> arrayList;
+    public static TextView etUsername;
+    public static TextView etEmail;
 
     private final static int LOADER_ID = 0;
 
@@ -87,27 +90,47 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
+
+        View headerLayout = navigationView.getHeaderView(0);
+        etUsername = headerLayout.findViewById(R.id.username);
+        etEmail = headerLayout.findViewById(R.id.email);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                Bundle bundle = new Bundle();
+                MultiTaskDialogFragment dialog = new MultiTaskDialogFragment();
 
-                if (item.getItemId() == R.id.add_wishes) {
-//                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
-//                    startActivity(intent);
+
+                if (item.getItemId() == R.id.change_username) {
+                    bundle.putInt("id", item.getItemId());
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
                 }
 
                 //To add new birthday wishes
-                if (item.getItemId() == R.id.add_wishes) {
-                    AddMEssageDialog dialog = new AddMEssageDialog();
-                    dialog.show(getSupportFragmentManager(), "AddNewMessageDialog");
+                if (item.getItemId() == R.id.change_email) {
+                    bundle.putInt("id", item.getItemId());
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
                 }
 
                 //To backup data to cloud
-                if(item.getItemId() == R.id.drawer_backup_data){
+                if(item.getItemId() == R.id.setting){
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                }
+
+                if (item.getItemId() == R.id.add_wishes) {
+                    bundle.putInt("id", item.getItemId());
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
+                }
+
+                if (item.getItemId() == R.id.backup_data) {
                     backUpData();
                 }
 

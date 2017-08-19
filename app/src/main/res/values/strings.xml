@@ -2,23 +2,24 @@
     <string name="app_name">Birthday Reminder</string>
 
     <string name="action_delete_all">Delete All</string>
-    <string name="action_setting">Setting</string>
-    <string name="action_add_wishes">Add Wishes</string>
     <string name="action_backup_data">Backup Data</string>
+
     <string name="title_activity_update_birthday">Update Birthday</string>
     <string name="title_activity_add_birthday">Add Birthday</string>
     <string name="title_activity_today_birthday">Today Birthday</string>
     <string name="title_upcoming_tab">Upcoming</string>
 
+    <string name="drawer_username">Change Username</string>
+    <string name="drawer_email">Change Email</string>
+    <string name="drawer_setting">Device Setting</string>
+    <string name="drawer_add_wishes">Add New Wish</string>
 
     <string name="name">Name</string>
     <string name="email_address">Email Address</string>
     <string name="bithday_date">Birthday</string>
     <string name="phone">Phone number</string>
     <string name="day_left">Left</string>
-    <string name="notification">Show Notification</string>
     <string name="birthday_wish">Happy Birthday</string>
-    <string name="add_photo">Add a photo here</string>
     <string name="open_drawer">Drawer opened</string>
     <string name="close_drawer">Drawer closed</string>
     <string name="profile_name">WC</string>
@@ -27,9 +28,10 @@
 
     <string name="back_data_message">Data had backup successfully</string>
     <string name="no_record">No birthday record found</string>
+    <string name="add_photo">Add a photo here</string>
+    <string name="notification">Show Notification</string>
 
     <string name="wishes_dialog_title">Select a message to wish %s</string>
-    <string name="new_wishes_dialog_title">Add new wish</string>
     <string name="first_wish">Happy Birthday</string>
     <string name="second_wish">Good Luck</string>
     <string name="third_wish">Stay happy</string>
@@ -38,7 +40,6 @@
     <string name="task_cancelled">Task Cancelled</string>
     <string name="task_deleted_all">Deleted all records</string>
 
-
     <string name="notification_content_title">Today birthday list</string>
     <string name="notification_content_text">%d peoples birthday today</string>
 
@@ -46,5 +47,10 @@
     <string name="dialog_message">Are you sure you want to delete all records?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
+
+    <string name="dialog_param">DialogFragment</string>
+    <string name="new_wishes_dialog_title">Add new wish</string>
+    <string name="change_username_dialog_title">Enter New Username</string>
+    <string name="change_email_dialog_title">Add New Email</string>
 
 </resources>
