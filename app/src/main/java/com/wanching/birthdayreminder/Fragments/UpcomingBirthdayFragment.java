@@ -118,13 +118,14 @@ public class UpcomingBirthdayFragment extends Fragment {
                             dbq.deleteAll();
                             adapter.swapCursor(cursor);
                             cursor.close();
-                            Toast.makeText(getContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getString(R.string.task_deleted_all), Toast.LENGTH_SHORT).show();
                             onResume();
                         }
                     })
                     .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getContext(), getString(R.string.task_cancelled), Toast.LENGTH_SHORT).show();
                             dialogInterface.cancel();
                         }
                     });

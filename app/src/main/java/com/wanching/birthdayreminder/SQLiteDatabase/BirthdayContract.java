@@ -13,8 +13,7 @@ import android.provider.BaseColumns;
 
 public class BirthdayContract {
 
-    public BirthdayContract() {
-    }
+    public BirthdayContract(){}
 
     public static class BirthdayEntry implements BaseColumns {
         public static final String TABLE_NAME = "birthday";

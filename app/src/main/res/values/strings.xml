@@ -35,6 +35,8 @@
     <string name="third_wish">Stay happy</string>
     <string name="response_ok">Ok</string>
     <string name="response_cancel">Cancel</string>
+    <string name="task_cancelled">Task Cancelled</string>
+    <string name="task_deleted_all">Deleted all records</string>
 
 
     <string name="notification_content_title">Today birthday list</string>

@@ -232,6 +232,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
                 .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.task_cancelled), Toast.LENGTH_SHORT).show();
                         dialogInterface.cancel();
                     }
                 });
