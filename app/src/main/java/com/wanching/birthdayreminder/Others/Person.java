@@ -11,6 +11,10 @@ import java.util.concurrent.TimeUnit;
  * Created by WanChing on 6/8/2017.
  */
 
+/**
+ * Class for handling all personal details of a person
+ */
+
 public class Person implements Serializable {
     private static transient Bitmap image;
     private long id;
@@ -77,11 +81,10 @@ public class Person implements Serializable {
         return birthday;
     }
 
-    public void setBirthday(Calendar calendar) {
-        calendar.set(Calendar.MILLISECOND, 0);
-        this.birthday = new Date(calendar.getTimeInMillis());
-    }
-
+    /**
+     * Return this year birthday date in a Calendar format
+     * @return Calendar
+     */
     public Calendar getThisYearBirthday() {
         Calendar thisBirthday = getBirthdayAsCalendar();
         thisBirthday.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
@@ -89,6 +92,10 @@ public class Person implements Serializable {
         return thisBirthday;
     }
 
+    /**
+     * Return next year birthday date in a Calendar format
+     * @return Calendar
+     */
     public Calendar getNextYearBirthday() {
         Calendar nextBirthday = getBirthdayAsCalendar();
         nextBirthday.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) + 1);
@@ -96,6 +103,10 @@ public class Person implements Serializable {
         return nextBirthday;
     }
 
+    /**
+     * Return the exact birthday date in a Calendar format
+     * @return Calendar
+     */
     public Calendar getBirthdayAsCalendar() {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(birthday.getTime());
@@ -114,6 +125,10 @@ public class Person implements Serializable {
         this.birthday = birthday;
     }
 
+    /**
+     * Calculate the duration between today date and the particular birthday date
+     * @return long Duration in days
+     */
     public long getCountdown(){
         Calendar today = Calendar.getInstance();
         Calendar birthday = getThisYearBirthday();
@@ -123,26 +138,4 @@ public class Person implements Serializable {
 
         return Math.abs(days);
     }
-
-//    public Countdown getCountdown() {
-//        Calendar today = Calendar.getInstance();
-//        Calendar birthday = getThisYearBirthday();
-//
-//        long duration = birthday.getTimeInMillis() - today.getTimeInMillis();
-//
-//        Countdown countdown = new Countdown();
-//
-//        countdown.days = TimeUnit.MILLISECONDS.toDays(duration);
-//
-//        return countdown;
-//    }
-//
-//    public class Countdown {
-//
-//        private long days;
-//
-//        public long getDays() {
-//            return Math.abs(days);
-//        }
-//    }
 }

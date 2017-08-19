@@ -1,7 +1,5 @@
 package com.wanching.birthdayreminder.Fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,9 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,48 +26,49 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wanching.birthdayreminder.Activities.MainActivity;
 import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
-import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 
-import java.util.Calendar;
-
 /**
  * Created by WanChing on 6/8/2017.
  */
 
-public class AllBirthdayActivityFragment extends Fragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener, LoaderManager.LoaderCallbacks<Cursor> {
+/**
+ * Fragment for displaying all birthday records
+ */
+public class AllBirthdayFragment extends Fragment
+        implements SearchView.OnQueryTextListener,
+        SearchView.OnCloseListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private final static int LOADER_ID = 0;
+
     private ListView listView;
     private SearchView searchView = null;
     private TextView tvEmpty;
     private String subString;
     private BirthdayCursorAdapter adapter;
-    private OnRereshFragmentListener listener;
     private ProgressBar progressBar;
+    private OnRereshFragmentListener listener;
 
-    public AllBirthdayActivityFragment() {
-    }
+    public AllBirthdayFragment(){}
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_all_birthday, container, false);
 
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
+        progressBar = rootView.findViewById(R.id.progress_bar);
         listView = rootView.findViewById(R.id.birthday_list_view);
-
-
         tvEmpty = rootView.findViewById(R.id.empty_view);
-        listView.setEmptyView(tvEmpty);
 
+        //To indicate an empty list
+        listView.setEmptyView(tvEmpty);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -83,17 +80,10 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
             }
         });
 
-
-        //to display the menu in fragment
+        //To display a new menu in fragment
         setHasOptionsMenu(true);
 
         return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
     public void onResume() {
@@ -131,9 +121,12 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
                             Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
                             dbq.deleteAll();
+
+                            //To refresh cursor
                             adapter.swapCursor(cursor);
                             listener.refreshFragment();
-                            Toast.makeText(getContext(), "Deleted All ", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(getContext(), "Deleted all records", Toast.LENGTH_SHORT).show();
                             onResume();
                         }
                     })
@@ -143,6 +136,7 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                             dialogInterface.cancel();
                         }
                     });
+
             AlertDialog alert = builder.create();
             alert.setTitle(getString(R.string.dialog_title));
             alert.show();
@@ -207,10 +201,13 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
         try{
             listener = (OnRereshFragmentListener) context;
         }catch (ClassCastException ex){
-            throw new ClassCastException(context.toString() + " must implement interface");
+            throw new ClassCastException(context.toString() + " Must implement interface");
         }
     }
 
+    /**
+     * Asynchronous task for searching birthday records
+     */
     public static final class DbLoader extends AsyncTaskLoader<Cursor> {
 
         private String substring;
@@ -233,6 +230,8 @@ public class AllBirthdayActivityFragment extends Fragment implements SearchView.
                 String[] selectionArgs = {"%" + substring + "%"};
                 cursor = dbq.read(DbColumns.columns, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " LIKE ?", selectionArgs, null, null, null);
             } else {
+
+                //Display all records if searching is not implemented
                 cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
             }
             return cursor;

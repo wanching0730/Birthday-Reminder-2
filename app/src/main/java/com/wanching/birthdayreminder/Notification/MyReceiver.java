@@ -9,6 +9,10 @@ import android.net.Uri;
  * Created by WanChing on 17/8/2017.
  */
 
+/**
+ * Class for handling BroadcastReceiver feature
+ */
+
 public class MyReceiver extends BroadcastReceiver {
 
     public MyReceiver(){}

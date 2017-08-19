@@ -1,7 +1,11 @@
 package com.wanching.birthdayreminder.SQLiteDatabase;
 
 /**
- * Created by WanChing on 13/8/2017.
+ * Created by WanChing on 4/8/2017.
+ */
+
+/**
+ * Class for combining all database columns into an array of String
  */
 
 public class DbColumns {

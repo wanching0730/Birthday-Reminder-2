@@ -4,16 +4,18 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.util.SparseArrayCompat;
 import android.util.SparseArray;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
 
-import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
+import com.wanching.birthdayreminder.Fragments.AllBirthdayFragment;
 import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 
 /**
  * Created by WanChing on 6/8/2017.
+ */
+
+/**
+ * FragmentPagerAdapter for handling Swiping TabLayout
  */
 
 public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter{
@@ -32,7 +34,7 @@ public class SimpleFragmentPagerAdapter extends FragmentPagerAdapter{
             case 0:
                 return new UpcomingBirthdayFragment();
             case 1:
-                return new AllBirthdayActivityFragment();
+                return new AllBirthdayFragment();
             default:
                 return null;
         }

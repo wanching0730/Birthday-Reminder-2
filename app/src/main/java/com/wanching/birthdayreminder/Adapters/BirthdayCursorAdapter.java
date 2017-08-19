@@ -20,7 +20,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by WanChing on 6/8/2017.
+ * Created by WanChing on 7/8/2017.
+ */
+
+/**
+ * CursorAdapter for handling ListView and database
  */
 
 public class BirthdayCursorAdapter extends CursorAdapter {
@@ -55,8 +59,6 @@ public class BirthdayCursorAdapter extends CursorAdapter {
                 formattedDate,
                 changeBoolean(cursor.getInt(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY))));
 
-        //Person.Countdown countdown = person.getCountdown();
-
         TextView tvName = view.findViewById(R.id.name);
         TextView tvMonth = view.findViewById(R.id.month);
         TextView tvDay = view.findViewById(R.id.day);
@@ -72,6 +74,7 @@ public class BirthdayCursorAdapter extends CursorAdapter {
         tvDay.setText(DateFormat.format("dd", formattedDate));
         ivImage.setImageBitmap(imageBitmap);
 
+        // Display age and day of birthday
         if (today.get(Calendar.MONTH) == person.getBirthdayAsCalendar().get(Calendar.MONTH) && today.get(Calendar.DAY_OF_MONTH) == person.getBirthdayAsCalendar().get(Calendar.DAY_OF_MONTH)) {
             tvCountdown.setText("Today");
             tvAge.setText("Turned " + newAge);
@@ -95,7 +98,12 @@ public class BirthdayCursorAdapter extends CursorAdapter {
         return inflater.inflate(R.layout.list_item, parent, false);
     }
 
-    public boolean changeBoolean(int notify) {
+    /**
+     * Convert integer to boolean
+     * @param notify Notification status of a particular person
+     * @return boolean
+     */
+    private boolean changeBoolean(int notify) {
         return notify > 0;
     }
 }

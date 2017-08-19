@@ -4,10 +4,8 @@ import android.app.AlarmManager;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,8 +14,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,13 +27,11 @@ import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Adapters.SimpleFragmentPagerAdapter;
 import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
-import com.wanching.birthdayreminder.Fragments.AllBirthdayActivityFragment;
+import com.wanching.birthdayreminder.Fragments.AllBirthdayFragment;
 import com.wanching.birthdayreminder.Fragments.UpcomingBirthdayFragment;
 import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.Others.BackupDataTask;
 import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,19 +44,19 @@ import java.util.Date;
  * Created by WanChing on 6/8/2017.
  */
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<JSONObject>, UpcomingBirthdayFragment.OnSetCountListener, AllBirthdayActivityFragment.OnRereshFragmentListener {
-
-    private final static int LOADER_ID = 0;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
-    private FragmentManager fm;
-    private FragmentTransaction ft;
-    private TabLayout tabLayout;
-    private SimpleFragmentPagerAdapter adapter;
+public class MainActivity extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<JSONObject>,
+        UpcomingBirthdayFragment.OnSetCountListener,
+        AllBirthdayFragment.OnRereshFragmentListener {
 
     public static ArrayList<String> arrayList;
 
-    //public static ArrayList<String> arrayList;
+    private final static int LOADER_ID = 0;
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private TabLayout tabLayout;
+    private SimpleFragmentPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,22 +88,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
 
                 if (item.getItemId() == R.id.add_wishes) {
 //                    Intent intent = new Intent(MainActivity.this, AddBirthdayActivity.class);
 //                    startActivity(intent);
                 }
 
+                //To add new birthday wishes
                 if (item.getItemId() == R.id.add_wishes) {
                     AddMEssageDialog dialog = new AddMEssageDialog();
                     dialog.show(getSupportFragmentManager(), "AddNewMessageDialog");
                 }
 
+                //To backup data to cloud
                 if(item.getItemId() == R.id.drawer_backup_data){
                     backUpData();
                 }
@@ -121,10 +118,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-        BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(this));
-        Cursor cursor = dbq.retrieveTodayBirthday();
-        Log.v("database noti", cursor.getCount() + "");
     }
 
     @Override
@@ -160,6 +153,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader loader) {
     }
 
+    /**
+     * Return message after data are synced to cloud
+     * @param response Response from cloud
+     * @return String Message to be output for user
+     */
     public String outputMessage(JSONObject response) {
         try {
             return Integer.toString(response.getInt("recordsSynced")) + " " + getResources().getString(R.string.back_data_message);
@@ -169,16 +167,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    /**
+     * Connect to cloud for backup data purpose
+     */
     private void backUpData (){
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             getLoaderManager().restartLoader(LOADER_ID, null, this).forceLoad();
         } else {
-            Toast.makeText(MainActivity.this, "Network is unavaiable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Network is unavailable", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Display number of records for upcoming birthday on TabLayout
+     * @param count Number of records for upcoming birthday
+     */
     @Override
     public void setCount(int count) {
         tabLayout.getTabAt(0).setText(getResources().getString(R.string.title_upcoming_tab) + " (" + count + ")");
@@ -189,6 +194,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter.getTargetFragment(0).onResume();
     }
 
+    /**
+     * Set up notification at 8am everyday to inform today birthday list
+     */
     private void setUpNptification(){
 
         AlarmManager alarmManager;
@@ -202,6 +210,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         calendar.set(Calendar.MINUTE, 00);
         calendar.set(Calendar.SECOND, 00);
 
+
+        // Add one day to the alarm after it ringed
         if(calendar.before(now)){
             calendar.add(Calendar.DATE, 1);
         }

@@ -1,10 +1,8 @@
 package com.wanching.birthdayreminder.Activities;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -13,16 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wanching.birthdayreminder.Adapters.SpinnerAdapter;
-import com.wanching.birthdayreminder.Fragments.AddMEssageDialog;
 import com.wanching.birthdayreminder.Others.Person;
 import com.wanching.birthdayreminder.R;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
@@ -33,7 +25,6 @@ import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,31 +32,28 @@ import java.util.Locale;
  * Created by WanChing on 6/8/2017.
  */
 
+/**
+ * Activity for viewing personal details of a selected person
+ */
+
 public class ViewBirthdayActivity extends AppCompatActivity {
 
+    // Message to be sent out through SMS
     public static final String EXTRA_BIRTHDAY = "com.wanching.birthdayreminder.BIRTHDAY";
-    private Person person;
-    public static ArrayAdapter<String> arrayAdapter;
-//    private String[] messages;
-//    private SpinnerAdapter adapter;
 
-    public static boolean changeBoolean(int notify) {
-        return notify > 0;
-    }
+    private Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_birthday);
-
-//        messages = getResources().getStringArray(R.array.messages);
-//        adapter = new SpinnerAdapter(getApplicationContext(), messages);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        //Intent received from fragment
         Intent intent = getIntent();
         long id = intent.getLongExtra("ID", 0);
 
@@ -133,6 +121,10 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    /**
+     * Display countdown animation for a birthday
+     * @param millisUntilFinished End time of the countdown
+     */
     public void onTickCalculation(long millisUntilFinished) {
 
         TextView tvDay = (TextView) findViewById(R.id.day);
@@ -150,6 +142,10 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         tvSecond.setText(Long.toString(((serverUptimeSeconds % 86400) % 3600) % 60));
     }
 
+    /**
+     * Edit personal details of the selected person
+     * @param view The selected button
+     */
     public void editBirthday(View view) {
         Intent intent = new Intent(getApplicationContext(), UpdateBirthdayActivity.class);
         intent.putExtra(EXTRA_BIRTHDAY, person);
@@ -157,19 +153,21 @@ public class ViewBirthdayActivity extends AppCompatActivity {
             startActivity(intent);
     }
 
+    /**
+     * Choose a birthday wish to send to the selected person through SMS
+     * @param view The selected button
+     */
     public void messageWish(View view) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(ViewBirthdayActivity.this);
-        builder.setTitle(String.format(getResources().getString(R.string.wishes_dialog_title), person.getName()));
 
         List<CharSequence> charSequences = new ArrayList<>();
 
-        charSequences.add(getResources().getString(R.string.first_wish));
-        charSequences.add(getResources().getString(R.string.second_wish));
-        charSequences.add(getResources().getString(R.string.third_wish));
+        charSequences.add(getString(R.string.first_wish));
+        charSequences.add(getString(R.string.second_wish));
+        charSequences.add(getString(R.string.third_wish));
 
         int count = 0;
 
+        // To add new birthday wish (which are inserted by user through DrawerLayout) into the dialog list
         if(MainActivity.arrayList != null) {
             while (count < MainActivity.arrayList.size()) {
                 String newMessage = MainActivity.arrayList.get(count);
@@ -179,9 +177,10 @@ public class ViewBirthdayActivity extends AppCompatActivity {
         }
 
         final CharSequence[] charSequencesArray = charSequences.toArray(new CharSequence[charSequences.size()]);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ViewBirthdayActivity.this);
+
+        builder.setTitle(String.format(getString(R.string.wishes_dialog_title), person.getName()));
         builder.setSingleChoiceItems(charSequencesArray, 0, null);
-
-
         builder.setPositiveButton(R.string.response_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -189,6 +188,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
                 String messageToSend = charSequencesArray[selectedPosition].toString();
                 String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext());
 
+                // Send a SMS to a particular phone number
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(person.getPhone().toString())));
                 intent.putExtra("sms_body", messageToSend);
 
@@ -209,64 +209,13 @@ public class ViewBirthdayActivity extends AppCompatActivity {
             }
         });
 
-//        builder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener(){
-//            @Override
-//            public void onClick(DialogInterface dialogInterface, int position) {
-//                String message = arrayAdapter.getItem(position);
-//
-//                String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(getApplicationContext());
-//
-//                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + Uri.encode(person.getPhone().toString())));
-//                intent.putExtra("sms_body", message);
-//
-//                // Can be null in case that there is no default, then the user would be able to choose any app that supports this intent.
-//                if (defaultSmsPackageName != null)
-//                {
-//                    intent.setPackage(defaultSmsPackageName);
-//                }
-//
-//                startActivity(intent);
-//
-//            }
-//        });
-
         builder.show();
-
-
-//        Dialog dialog = new Dialog(ViewBirthdayActivity.this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.message_spinner);
-//        dialog.setCancelable(true);
-//        dialog.show();
-//
-//        String[] messages = getResources().getStringArray(R.array.messages);
-//        SpinnerAdapter adapter = new SpinnerAdapter(getApplicationContext(), messages);
-//        Spinner spinner = dialog.findViewById(R.id.spinner);
-//        spinner.setAdapter(adapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-//                switch (position){
-//                    case 0:
-//                        Toast.makeText(ViewBirthdayActivity.this, "case 1", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case 1:
-//                        Toast.makeText(ViewBirthdayActivity.this, "case 2", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case 2:
-//                        Toast.makeText(ViewBirthdayActivity.this, "case 3", Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
     }
 
+    /**
+     * Delete current birthday record
+     * @param view The selected button
+     */
     public void deleteBirthday(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewBirthdayActivity.this);

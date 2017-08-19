@@ -13,10 +13,12 @@ import android.widget.Toast;
 import com.wanching.birthdayreminder.Activities.MainActivity;
 import com.wanching.birthdayreminder.R;
 
-import java.util.ArrayList;
-
 /**
  * Created by WanChing on 17/8/2017.
+ */
+
+/**
+ * DialogFragment for handing AlertDialog to add new birthday wishes
  */
 
 public class AddMEssageDialog extends DialogFragment {
@@ -25,16 +27,12 @@ public class AddMEssageDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final Context context = getActivity();
-        //LayoutInflater inflater = getActivity().getLayoutInflater();
-
         final EditText etNewMessage = new EditText(getContext());
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         builder.setView(etNewMessage);
-        builder.setTitle(getResources().getString(R.string.new_wishes_dialog_title));
-
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.new_wishes_dialog_title));
+        builder.setPositiveButton(getString(R.string.response_ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String newMeessage = etNewMessage.getText().toString();
@@ -43,7 +41,7 @@ public class AddMEssageDialog extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.response_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();

@@ -29,9 +29,14 @@ import java.util.ArrayList;
  * Created by WanChing on 6/8/2017.
  */
 
+/**
+ * Asynchronous task for posting data to cloud
+ */
+
 public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> {
 
     private static final String JSON_URL = "http://labs.jamesooi.com/uecs3253-asg.php";
+
     private Activity activity;
     private ArrayList<Person> persons;
 
@@ -55,13 +60,15 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
         return response;
     }
 
+    /**
+     * Read all records from database
+     */
     public void readDbData() {
 
         persons = new ArrayList<Person>();
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
         Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
 
-        //TODO: open static method
         while (cursor.moveToNext()) {
             Person person = BirthdayDbQueries.retrievePerson(cursor);
 
@@ -69,15 +76,16 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
         }
     }
 
+    /**
+     * Add all JSONObject to a new JSONArray
+     * @return JSONArray A new created JSONArray
+     */
     public JSONArray convertToJsonArray() {
 
         JSONArray jsonArray = new JSONArray();
 
-
         try {
-
             for (int i = 0; i < persons.size(); i++) {
-                JSONObject jsonObject = new JSONObject();
 
                 jsonArray.put(new JSONObject().put("id", persons.get(i).getId())
                         .put("name", persons.get(i).getName())
@@ -89,12 +97,14 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
         } catch (JSONException ex) {
             Log.e("JSONEXCEPTION", ex.toString());
             return null;
-
-
         }
         return jsonArray;
     }
 
+    /**
+     * Post all records to cloud
+     * @return JSONObject Converted response from cloud
+     */
     private JSONObject postJson() throws IOException {
 
         InputStream is = null;
@@ -111,10 +121,12 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
             conn.setDoOutput(true);
 
             os = conn.getOutputStream();
+
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
             writer.write(getPostDataString(convertToJsonArray()));
             writer.flush();
             writer.close();
+
             os.close();
 
             int responseCode = conn.getResponseCode();
@@ -126,8 +138,6 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
                 Log.e("HTTP_ERROR", Integer.toString(responseCode));
                 return null;
             }
-
-
         } catch (Exception ex) {
             Log.e("EXCEPTION", ex.toString());
             return null;
@@ -138,6 +148,11 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
         }
     }
 
+    /**
+     * Convert InputStream to JSONObject
+     * @param is Response from cloud
+     * @return JSONObject
+     */
     public JSONObject readInputStream(InputStream is) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
         StringBuilder builder = new StringBuilder();
@@ -149,6 +164,11 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
         return new JSONObject(builder.toString());
     }
 
+    /**
+     * Return output String that will be sent to the cloud
+     * @param jsonArray
+     * @return String
+     */
     private String getPostDataString(JSONArray jsonArray) throws Exception {
 
         StringBuilder result = new StringBuilder();
@@ -159,6 +179,4 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
 
         return result.toString();
     }
-
-
 }

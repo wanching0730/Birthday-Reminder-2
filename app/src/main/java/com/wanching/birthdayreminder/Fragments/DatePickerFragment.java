@@ -18,6 +18,9 @@ import java.util.Locale;
  * Created by WanChing on 6/8/2017.
  */
 
+/**
+ * DialogFragment for handling DatePicker dialog
+ */
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
     public static Calendar cal = null;

@@ -7,6 +7,10 @@ import android.provider.BaseColumns;
  * Created by WanChing on 4/8/2017.
  */
 
+/**
+ * Class for initialize all columns name of the database
+ */
+
 public class BirthdayContract {
 
     public BirthdayContract() {

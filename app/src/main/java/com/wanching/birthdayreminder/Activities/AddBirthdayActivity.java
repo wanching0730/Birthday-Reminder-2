@@ -34,9 +34,14 @@ import java.util.Locale;
  * Created by WanChing on 6/8/2017.
  */
 
+/**
+ * Activity for adding new birthday record
+ */
+
 public class AddBirthdayActivity extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 1;
+
     private EditText etName;
     private EditText etEmail;
     private EditText etPhone;
@@ -45,9 +50,8 @@ public class AddBirthdayActivity extends AppCompatActivity {
     private ImageView ivImage;
     private Switch swNotification;
     private Bitmap bitmap = null;
-    private boolean saved = false;
     private Conversion conversion;
-
+    private boolean saved = false;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
@@ -97,6 +101,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
                         String date = etDate.getText().toString();
                         Boolean notification = swNotification.isChecked();
 
+                        // Check whether all information are filled up completely
                         if (name.matches("") || email.matches("") || phone.matches("")) {
                             Toast.makeText(AddBirthdayActivity.this, "Please enter all details to proceed", Toast.LENGTH_SHORT).show();
                         } else {
@@ -108,14 +113,14 @@ public class AddBirthdayActivity extends AppCompatActivity {
 
                             if (dbq.insert(person) != 0) {
                                 saved = true;
-                                Toast.makeText(AddBirthdayActivity.this, "New record created successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddBirthdayActivity.this, "New record added successfully!", Toast.LENGTH_SHORT).show();
 
                                 finish();
                             }
                         }
                     } catch (ParseException ex) {
                         ex.printStackTrace();
-                        Toast.makeText(AddBirthdayActivity.this, "Please select a date", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddBirthdayActivity.this, "Please select a date to proceed", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -130,7 +135,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), intent.getData());
                     } catch (IOException ex) {
-                        Log.wtf("Ioexception", ex);
+                        Log.wtf("IOEXCEPTION", ex);
                     }
                 }
 
@@ -139,11 +144,18 @@ public class AddBirthdayActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * To add a new birthday date
+     * @param view The selected EditText view
+     */
     public void SetDate(View view) {
         DialogFragment fragment = new DatePickerFragment();
         fragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    /**
+     * Save all the incomplete data to shared preference
+     */
     protected void onPause() {
         super.onPause();
 

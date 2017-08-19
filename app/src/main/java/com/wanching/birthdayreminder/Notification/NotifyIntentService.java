@@ -17,9 +17,15 @@ import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
  * Created by WanChing on 17/8/2017.
  */
 
+/**
+ * Class for handling notification service
+ * which will notify user about the today birthday list
+ */
+
 public class NotifyIntentService extends IntentService {
 
     private static final int NOTIFICTION_ID = 1;
+
     private BirthdayDbQueries dbq;
 
     public NotifyIntentService(){
@@ -31,17 +37,17 @@ public class NotifyIntentService extends IntentService {
 
         dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
 
-//        Log.v("cursor_count", cursor.getCount() + "");
-//        Log.v("now", cal.getTimeInMillis() + "");
-
         if(dbq.retrieveTodayBirthday().getCount() > 0) {
             startNotificationService();
         }
     }
 
+    /**
+     * Start notification service
+     */
     private void startNotificationService(){
         Notification.Builder builder = new Notification.Builder(this);
-        builder.setContentTitle(getResources().getString(R.string.notification_content_title))
+        builder.setContentTitle(getString(R.string.notification_content_title))
         .setContentText(String.format(getString(R.string.notification_content_text), dbq.retrieveTodayBirthday().getCount()))
         .setAutoCancel(true)
         .setSmallIcon(R.drawable.cake_white)

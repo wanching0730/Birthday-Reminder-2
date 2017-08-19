@@ -12,6 +12,15 @@ import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
+
+/**
+ * Created by WanChing on 8/8/2017.
+ */
+
+/**
+ * For handling all database queries
+ */
+
 public class BirthdayDbQueries {
 
     private BirthdayDbHelper helper;
@@ -20,6 +29,10 @@ public class BirthdayDbQueries {
         this.helper = helper;
     }
 
+    /**
+     * Return all birthday records that stored in database
+     * @return Cursor All birthday records
+     */
     public Cursor read(String[] columns, String selection, String[] selectionArgs, String groupby, String having, String orderBy) {
         SQLiteDatabase db = helper.getReadableDatabase();
 
@@ -34,6 +47,11 @@ public class BirthdayDbQueries {
         );
     }
 
+    /**
+     * Return an ID from database to indicate the new added record
+     * @param person New added Person object
+     * @return long Row ID of a selected person
+     */
     public long insert(Person person) {
         SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -43,6 +61,11 @@ public class BirthdayDbQueries {
         return id;
     }
 
+    /**
+     * Return an ID from database to indicate the new updated record
+     * @param person Selected Person object
+     * @return int Row ID of a selected person
+     */
     public int update(Person person) {
         SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -58,6 +81,10 @@ public class BirthdayDbQueries {
         );
     }
 
+    /**
+     * Delete selected person from database
+     * @param id Selected person to be deleted
+     */
     public void delete(long id) {
         SQLiteDatabase db = helper.getWritableDatabase();
 
@@ -67,11 +94,19 @@ public class BirthdayDbQueries {
         db.delete(BirthdayContract.BirthdayEntry.TABLE_NAME, selection, selectionArgs);
     }
 
+    /**
+     * Delete all record from database
+     */
     public void deleteAll() {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.delete(BirthdayContract.BirthdayEntry.TABLE_NAME, null, null);
     }
 
+    /**
+     * Convert Bitmap to byte array
+     * @param person Selected Person object
+     * @return byte[] Byte array of the particular image
+     */
     public byte[] convertToByteArray(Person person) {
         Bitmap imageBitmap = person.getImage();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -93,6 +128,11 @@ public class BirthdayDbQueries {
         return values;
     }
 
+    /**
+     * Return Person object from cursor
+     * @param cursor Cursor from database
+     * @return Person Selected Person object
+     */
     public static Person retrievePerson(Cursor cursor){
         byte[] imageByte = cursor.getBlob(cursor.getColumnIndex(BirthdayContract.BirthdayEntry.COLUMN_NAME_IMAGE));
 
@@ -109,6 +149,10 @@ public class BirthdayDbQueries {
         return person;
     }
 
+    /**
+     * Return a cursor of today birthday records
+     * @return Cursor Row ID of a selected person
+     */
     public Cursor retrieveTodayBirthday(){
         Calendar cal = Calendar.getInstance();
         String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch') AND " + BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY + " = ?";
@@ -118,14 +162,11 @@ public class BirthdayDbQueries {
         return cursor;
     }
 
-//    public Cursor retrieveTodayBirthday1(){
-//        Calendar cal = Calendar.getInstance();
-//        String selection = BirthdayContract.BirthdayEntry.COLUMN_NAME_NOTIFY + " = '1'";
-//        Cursor cursor = read(DbColumns.columns, selection, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
-//
-//        return cursor;
-//    }
-
+    /**
+     * Convert integer to boolean
+     * @param notify Notification status of a particular person
+     * @return boolean
+     */
     private static boolean changeBoolean(int notify) {
         return notify > 0;
     }
@@ -136,6 +177,4 @@ public class BirthdayDbQueries {
         else
             return 0;
     }
-
-
 }

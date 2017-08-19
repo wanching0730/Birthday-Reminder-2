@@ -4,6 +4,15 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+
+/**
+ * Created by WanChing on 4/8/2017.
+ */
+
+/**
+ * Class for creating a new database and database table
+ */
+
 public class BirthdayDbHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;

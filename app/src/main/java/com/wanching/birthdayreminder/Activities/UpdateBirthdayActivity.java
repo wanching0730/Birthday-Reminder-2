@@ -31,10 +31,16 @@ import java.util.Locale;
  * Created by WanChing on 6/8/2017.
  */
 
+/**
+ * Activity for updating the personal details of a selected person
+ */
+
+
 public class UpdateBirthdayActivity extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 1;
     private static Bitmap bitmap;
+
     private Person person;
     private Date formattedDate;
     private EditText etName;
@@ -118,7 +124,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), intent.getData());
                     } catch (IOException ex) {
-                        Log.wtf("Ioexception", ex);
+                        Log.wtf("IOEXCEPTION", ex);
                     }
                 }
 
@@ -127,6 +133,10 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * To update a new birthday date
+     * @param view The selected EditText view
+     */
     public void SetDate(View view) {
         DialogFragment fragment = new DatePickerFragment();
         fragment.show(getSupportFragmentManager(), "datePicker");

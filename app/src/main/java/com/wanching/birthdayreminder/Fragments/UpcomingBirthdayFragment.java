@@ -1,7 +1,5 @@
 package com.wanching.birthdayreminder.Fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,8 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wanching.birthdayreminder.Activities.MainActivity;
-import com.wanching.birthdayreminder.Notification.MyReceiver;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.Activities.ViewBirthdayActivity;
 import com.wanching.birthdayreminder.Adapters.BirthdayCursorAdapter;
@@ -32,11 +28,14 @@ import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
 import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
  * Created by WanChing on 6/8/2017.
+ */
+
+/**
+ * Fragment for displaying upcoming birthday records
  */
 
 public class UpcomingBirthdayFragment extends Fragment {
@@ -44,18 +43,17 @@ public class UpcomingBirthdayFragment extends Fragment {
     private ListView listView;
     private BirthdayCursorAdapter adapter;
     private TextView tvEmpty;
-    private OnSetCountListener listener;
     private ProgressBar progressBar;
+    private OnSetCountListener listener;
 
-    public UpcomingBirthdayFragment() {
-    }
+    public UpcomingBirthdayFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_upcoming_birthday, container, false);
 
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
+        progressBar = rootView.findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
         listView = rootView.findViewById(R.id.birthday_list_view);
 
@@ -83,13 +81,10 @@ public class UpcomingBirthdayFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        //setUpNptification();
-
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
         String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
         String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis() - 86400000), Long.toString(Calendar.getInstance().getTimeInMillis() + 86400000)};
-        //String[] selectionArgs =
 
         Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
         Log.v("upcoming cursor", "got cursor2");
@@ -155,17 +150,4 @@ public class UpcomingBirthdayFragment extends Fragment {
             throw new ClassCastException(context.toString() + " must implement OnSetCountListener");
         }
     }
-
-//    private void setUpNptification(){
-//
-//        AlarmManager alarmManager;
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTimeInMillis(System.currentTimeMillis());
-//        calendar.set(Calendar.HOUR_OF_DAY, 8);
-//
-//        Intent intent = new Intent(getContext(), MyReceiver.class);
-//        PendingIntent alarmIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
-//        alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
-//    }
 }
