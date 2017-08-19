@@ -287,7 +287,7 @@ public class ViewBirthdayActivity extends AppCompatActivity {
                     }
                 });
         AlertDialog alert = builder.create();
-        alert.setTitle(getString(R.string.dialog_title);
+        alert.setTitle(getString(R.string.dialog_title));
         alert.show();
     }
 }
