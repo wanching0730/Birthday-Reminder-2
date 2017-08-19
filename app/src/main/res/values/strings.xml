@@ -2,14 +2,10 @@
     <string name="app_name">Birthday Reminder</string>
 
     <string name="action_delete_all">Delete All</string>
-    <string name="action_refresh">Refresh</string>
     <string name="action_setting">Setting</string>
     <string name="action_add_wishes">Add Wishes</string>
     <string name="action_backup_data">Backup Data</string>
-
     <string name="title_activity_update_birthday">Update Birthday</string>
-    <string name="title_activity_upcoming_birthday">Upcoming Birthday</string>
-    <string name="title_activity_all_birthday">All Birthday</string>
     <string name="title_activity_add_birthday">Add Birthday</string>
     <string name="title_activity_today_birthday">Today Birthday</string>
     <string name="title_upcoming_tab">Upcoming</string>
@@ -21,7 +17,6 @@
     <string name="phone">Phone number</string>
     <string name="day_left">Left</string>
     <string name="notification">Show Notification</string>
-    <string name="delete_all">Delete All</string>
     <string name="birthday_wish">Happy Birthday</string>
     <string name="add_photo">Add a photo here</string>
     <string name="open_drawer">Drawer opened</string>
@@ -30,17 +25,24 @@
     <string name="user_name">WanChing Teoh</string>
     <string name="account_email">wanching_97@hotmail.com</string>
 
-    <string name="back_data_message">data had backup successfully</string>
+    <string name="back_data_message">Data had backup successfully</string>
+    <string name="no_record">No birthday record found</string>
 
     <string name="wishes_dialog_title">Select a message to wish %s</string>
     <string name="new_wishes_dialog_title">Add new wish</string>
     <string name="first_wish">Happy Birthday</string>
     <string name="second_wish">Good Luck</string>
     <string name="third_wish">Stay happy</string>
-    <string name="response_ok">OK</string>
-    <string name="response_cancel">CANCEL</string>
+    <string name="response_ok">Ok</string>
+    <string name="response_cancel">Cancel</string>
 
 
     <string name="notification_content_title">Today birthday list</string>
-    <string name="notification_content_text">%d people birthday today</string>
+    <string name="notification_content_text">%d peoples birthday today</string>
+
+    <string name="dialog_title">Warning</string>
+    <string name="dialog_message">Are you sure you want to delete all records?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+
 </resources>

@@ -66,7 +66,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
         etName.setText(person.getName());
         etEmail.setText(person.getEmail());
         etPhone.setText(person.getPhone());
-        etDate.setText(new SimpleDateFormat("EEEE, MMMM d, yyyy").format(person.getBirthday()));
+        etDate.setText(new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.ENGLISH).format(person.getBirthday()));
         ivImage.setImageBitmap(bitmap);
         swNotification.setChecked(person.isNotify());
 

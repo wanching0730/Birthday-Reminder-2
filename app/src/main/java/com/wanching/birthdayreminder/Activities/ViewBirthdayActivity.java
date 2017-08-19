@@ -271,8 +271,8 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewBirthdayActivity.this);
         builder.setCancelable(false)
-                .setMessage("Are you sure you want to delete this record?")
-                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                .setMessage(getString(R.string.dialog_message))
+                .setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getApplicationContext()));
                         dbq.delete(person.getId());
@@ -280,14 +280,14 @@ public class ViewBirthdayActivity extends AppCompatActivity {
                         finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
                     }
                 });
         AlertDialog alert = builder.create();
-        alert.setTitle("WARNING");
+        alert.setTitle(getString(R.string.dialog_title);
         alert.show();
     }
 }

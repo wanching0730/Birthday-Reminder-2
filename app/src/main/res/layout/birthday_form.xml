@@ -79,7 +79,7 @@
             style="@style/CommonEditText"/>
 
         <ImageView
-            android:src="@drawable/cake"
+            android:src="@drawable/cake_black"
             style="@style/CommonImageView"/>
 
     </LinearLayout>

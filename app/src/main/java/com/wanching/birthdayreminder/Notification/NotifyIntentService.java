@@ -4,20 +4,14 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.wanching.birthdayreminder.Activities.TodayBirthdayActivity;
 import com.wanching.birthdayreminder.R;
-import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayContract;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbHelper;
 import com.wanching.birthdayreminder.SQLiteDatabase.BirthdayDbQueries;
-import com.wanching.birthdayreminder.SQLiteDatabase.DbColumns;
-
-import java.util.Calendar;
 
 /**
  * Created by WanChing on 17/8/2017.
@@ -50,7 +44,7 @@ public class NotifyIntentService extends IntentService {
         builder.setContentTitle(getResources().getString(R.string.notification_content_title))
         .setContentText(String.format(getString(R.string.notification_content_text), dbq.retrieveTodayBirthday().getCount()))
         .setAutoCancel(true)
-        .setSmallIcon(R.drawable.cake)
+        .setSmallIcon(R.drawable.cake_white)
         .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
         Log.v("notification started", "notification");

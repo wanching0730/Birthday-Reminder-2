@@ -72,7 +72,7 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         tvEmpty = rootView.findViewById(R.id.empty_view);
         listView.setEmptyView(tvEmpty);
-        tvEmpty.setText("No Birthday Record Found!");
+        tvEmpty.setText(getString(R.string.no_record));
 
         setHasOptionsMenu(true);
 
@@ -115,8 +115,8 @@ public class UpcomingBirthdayFragment extends Fragment {
         if (id == R.id.action_delete_all) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setCancelable(false)
-                    .setMessage("Are you sure you want to delete all records?")
-                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    .setMessage(getString(R.string.dialog_message))
+                    .setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
                             Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
@@ -127,14 +127,14 @@ public class UpcomingBirthdayFragment extends Fragment {
                             onResume();
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
                         }
                     });
             AlertDialog alert = builder.create();
-            alert.setTitle("WARNING");
+            alert.setTitle(getString(R.string.dialog_title));
             alert.show();
         }
 
