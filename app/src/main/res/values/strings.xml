@@ -51,6 +51,6 @@
     <string name="dialog_param">DialogFragment</string>
     <string name="new_wishes_dialog_title">Add new wish</string>
     <string name="change_username_dialog_title">Enter New Username</string>
-    <string name="change_email_dialog_title">Add New Email</string>
+    <string name="change_email_dialog_title">Enter New Email</string>
 
 </resources>

@@ -40,11 +40,13 @@ public class MultiTaskDialogFragment extends DialogFragment {
 
         resourceId = getArguments().getInt("id", 0);
 
-        if(resourceId == R.id.change_username)
+        if(resourceId == R.id.change_username){
             builder.setTitle(getString(R.string.change_username_dialog_title));
-        else if(resourceId == R.id.change_email)
+            etNewMessage.setText(MainActivity.etUsername.getText());
+        }else if(resourceId == R.id.change_email){
             builder.setTitle(getString(R.string.change_email_dialog_title));
-        else
+            etNewMessage.setText(MainActivity.etEmail.getText());
+        }else
             builder.setTitle(getString(R.string.new_wishes_dialog_title));
 
         builder.setView(etNewMessage);
