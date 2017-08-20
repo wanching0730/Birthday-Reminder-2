@@ -162,6 +162,14 @@ public class BirthdayDbQueries {
         return cursor;
     }
 
+    public Cursor retrieveUpcomingBirthday(){
+        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
+        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis() - 86400000), Long.toString(Calendar.getInstance().getTimeInMillis() + 86400000)};
+        Cursor cursor = read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
+
+        return cursor;
+    }
+
     /**
      * Convert integer to boolean
      * @param notify Notification status of a particular person

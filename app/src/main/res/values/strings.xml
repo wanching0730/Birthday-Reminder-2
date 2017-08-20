@@ -8,11 +8,13 @@
     <string name="title_activity_add_birthday">Add Birthday</string>
     <string name="title_activity_today_birthday">Today Birthday</string>
     <string name="title_upcoming_tab">Upcoming</string>
+    <string name="title_display_piechart">Pie Chart</string>
 
     <string name="drawer_username">Change Username</string>
     <string name="drawer_email">Change Email</string>
     <string name="drawer_setting">Device Setting</string>
     <string name="drawer_add_wishes">Add New Wish</string>
+    <string name="drawer_display_piechart">Pie Chart</string>
 
     <string name="name">Name</string>
     <string name="email_address">Email Address</string>

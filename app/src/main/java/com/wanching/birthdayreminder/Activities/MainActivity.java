@@ -119,9 +119,13 @@ public class MainActivity extends AppCompatActivity
                     dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
                 }
 
-                // Proceed to device setting
-                if(item.getItemId() == R.id.setting){
-                    startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
+                // Display pie chart
+                if (item.getItemId() == R.id.display_piechart) {
+                    Intent intent = new Intent(getApplicationContext(), ShowPiechartActivity.class);
+                    if(intent.resolveActivity(getPackageManager()) != null)
+                        startActivity(intent);
+                    else
+                        Toast.makeText(MainActivity.this, "Activity does not exist", Toast.LENGTH_SHORT).show();
                 }
 
                 // Add new birthday wish to list
@@ -134,6 +138,11 @@ public class MainActivity extends AppCompatActivity
                 // Backup data to cloud
                 if (item.getItemId() == R.id.backup_data) {
                     backUpData();
+                }
+
+                // Proceed to device setting
+                if(item.getItemId() == R.id.setting){
+                    startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                 }
 
                 return true;

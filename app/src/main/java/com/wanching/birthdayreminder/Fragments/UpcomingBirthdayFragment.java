@@ -83,10 +83,7 @@ public class UpcomingBirthdayFragment extends Fragment {
 
         BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
 
-        String selection = "strftime('%m-%d'," + BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + "/1000, 'unixepoch')" + " BETWEEN strftime('%m-%d',?/1000, 'unixepoch') AND strftime('%m-%d',?/1000, 'unixepoch')";
-        String[] selectionArgs = {Long.toString(Calendar.getInstance().getTimeInMillis() - 86400000), Long.toString(Calendar.getInstance().getTimeInMillis() + 86400000)};
-
-        Cursor cursor = dbq.read(DbColumns.columns, selection, selectionArgs, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_DATE + " ASC");
+        Cursor cursor = dbq.retrieveUpcomingBirthday();
         Log.v("upcoming cursor", "got cursor2");
 
         adapter = new BirthdayCursorAdapter(getContext(), cursor, 0);

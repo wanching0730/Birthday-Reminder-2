@@ -30,10 +30,10 @@
         <menu>
 
             <item
-                android:id="@+id/setting"
+                android:id="@+id/display_piechart"
                 android:checked="false"
-                android:icon="@drawable/setting"
-                android:title="@string/drawer_setting" />
+                android:icon="@drawable/piechart"
+                android:title="@string/drawer_display_piechart" />
 
             <item
                 android:id="@+id/add_wishes"
@@ -46,6 +46,13 @@
                 android:checked="false"
                 android:icon="@drawable/backup"
                 android:title="@string/action_backup_data" />
+
+            <item
+                android:id="@+id/setting"
+                android:checked="false"
+                android:icon="@drawable/setting"
+                android:title="@string/drawer_setting" />
+
         </menu>
 
     </item>
