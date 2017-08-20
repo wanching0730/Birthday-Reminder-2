@@ -104,6 +104,7 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
     /**
      * Post all records to cloud
      * @return JSONObject Converted response from cloud
+     * @throws IOException Related to network and steam reading
      */
     private JSONObject postJson() throws IOException {
 
@@ -152,6 +153,8 @@ public class BackupDataTask extends android.content.AsyncTaskLoader<JSONObject> 
      * Convert InputStream to JSONObject
      * @param is Response from cloud
      * @return JSONObject
+     * @throws IOException Related to network and steam reading
+     *
      */
     public JSONObject readInputStream(InputStream is) throws IOException, JSONException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
