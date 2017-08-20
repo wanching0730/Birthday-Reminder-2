@@ -1,95 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/form_linear_layout"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    android:weightSum="1">
+    android:fillViewport="true">
 
-    <ImageView
-        android:id="@+id/person_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:src="@drawable/login"
-        android:layout_margin="14sp"/>
-
-    <TextView
-        android:text="@string/add_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textStyle="italic"
-        android:textColor="@android:color/black"/>
-
-    <EditText
-        android:id="@+id/add_name"
-        android:hint="@string/name"
+    <LinearLayout
+        android:id="@+id/form_linear_layout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:layout_margin="14sp" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/CommonLayoutWidthHeight">
-
-        <EditText
-            android:id="@+id/add_email"
-            android:hint="@string/email_address"
-            android:inputType="textEmailAddress"
-            style="@style/CommonEditText"/>
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:weightSum="1">
 
         <ImageView
-            android:src="@drawable/email"
-            style="@style/CommonImageView"/>
+            android:id="@+id/person_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/login"
+            android:layout_margin="14sp"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/CommonLayoutWidthHeight">
-
-        <EditText
-            android:id="@+id/add_phone"
-            android:hint="@string/phone"
-            android:inputType="phone"
-            style="@style/CommonEditText"/>
-
-        <ImageView
-            android:src="@drawable/phone"
-            style="@style/CommonImageView"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        style="@style/CommonLayoutWidthHeight">
+        <TextView
+            android:text="@string/add_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="italic"
+            android:textColor="@android:color/black"/>
 
         <EditText
-            android:id="@+id/date_selection"
-            android:hint="@string/bithday_date"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:onClick="SetDate"
-            style="@style/CommonEditText"/>
+            android:id="@+id/add_name"
+            android:hint="@string/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:layout_margin="14sp" />
 
-        <ImageView
-            android:src="@drawable/cake_black"
-            style="@style/CommonImageView"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            style="@style/CommonLayoutWidthHeight">
 
+            <EditText
+                android:id="@+id/add_email"
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress"
+                style="@style/CommonEditText"/>
+
+            <ImageView
+                android:src="@drawable/email"
+                style="@style/CommonImageView"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            style="@style/CommonLayoutWidthHeight">
+
+            <EditText
+                android:id="@+id/add_phone"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                style="@style/CommonEditText"/>
+
+            <ImageView
+                android:src="@drawable/phone"
+                style="@style/CommonImageView"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            style="@style/CommonLayoutWidthHeight">
+
+            <EditText
+                android:id="@+id/date_selection"
+                android:hint="@string/bithday_date"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="SetDate"
+                style="@style/CommonEditText"/>
+
+            <ImageView
+                android:src="@drawable/cake_black"
+                style="@style/CommonImageView"/>
+
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/notification"
+            android:text="@string/notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:switchPadding="30dp"
+            android:layout_margin="14sp"
+            android:textSize="16sp"/>
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/notification"
-        android:text="@string/notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:switchPadding="30dp"
-        android:layout_margin="14sp"
-        android:textSize="16sp"/>
-</LinearLayout>
+
+</ScrollView>
+
