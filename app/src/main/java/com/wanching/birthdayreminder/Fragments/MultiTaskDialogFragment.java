@@ -55,6 +55,7 @@ public class MultiTaskDialogFragment extends DialogFragment {
                 String newMessage = etNewMessage.getText().toString();
                 Log.v("newMessage", newMessage);
 
+                //Ensure the EditText is not empty before proceed
                 if(!newMessage.matches("")){
                     if(resourceId == R.id.change_username){
                         MainActivity.etUsername.setText(newMessage);

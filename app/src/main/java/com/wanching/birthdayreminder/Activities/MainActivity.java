@@ -105,31 +105,33 @@ public class MainActivity extends AppCompatActivity
                 Bundle bundle = new Bundle();
                 MultiTaskDialogFragment dialog = new MultiTaskDialogFragment();
 
-
+                // Change username
                 if (item.getItemId() == R.id.change_username) {
                     bundle.putInt("id", item.getItemId());
                     dialog.setArguments(bundle);
                     dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
                 }
 
-                //To add new birthday wishes
+                // Change email address
                 if (item.getItemId() == R.id.change_email) {
                     bundle.putInt("id", item.getItemId());
                     dialog.setArguments(bundle);
                     dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
                 }
 
-                //To backup data to cloud
+                // Proceed to device setting
                 if(item.getItemId() == R.id.setting){
                     startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                 }
 
+                // Add new birthday wish to list
                 if (item.getItemId() == R.id.add_wishes) {
                     bundle.putInt("id", item.getItemId());
                     dialog.setArguments(bundle);
                     dialog.show(getSupportFragmentManager(), getString(R.string.dialog_param));
                 }
 
+                // Backup data to cloud
                 if (item.getItemId() == R.id.backup_data) {
                     backUpData();
                 }
