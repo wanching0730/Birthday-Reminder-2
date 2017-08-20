@@ -7,7 +7,13 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="1dp"
     card_view:cardElevation="2sp"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="5dp">
+
+    <FrameLayout
+        android:background="@color/colorAccent"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:id="@+id/list_item"
@@ -39,8 +45,9 @@
                 android:id="@+id/name"
                 tools:text="Name"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:paddingTop="12sp"
+                android:layout_height="wrap_content"
                 style="@style/CommonStyle"/>
 
             <TextView
@@ -68,17 +75,27 @@
             android:orientation="vertical"
             android:layout_weight="1"
             android:layout_marginTop="12sp"
+            android:layout_marginRight="5sp"
             android:gravity="center">
 
             <TextView
                 android:id="@+id/month"
                 tools:text="Month"
-                style="@style/CommonStyle"/>
+                style="@style/CommonStyle"
+                android:layout_height="23sp"
+                android:background="@drawable/date_month"
+                android:gravity="center"/>
 
             <TextView
                 android:id="@+id/day"
                 tools:text="Day"
-                style="@style/CommonStyle"/>
+                style="@style/CommonStyle"
+                android:layout_height="28sp"
+                android:background="@drawable/date_day"
+                android:gravity="center"/>
+
         </LinearLayout>
+
     </LinearLayout>
+
 </android.support.v7.widget.CardView>

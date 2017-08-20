@@ -126,7 +126,7 @@ public class Person implements Serializable {
     }
 
     /**
-     * Calculate the duration between today date and the particular birthday date
+     * Calculate the duration between today date and the particular birthday date_month
      * @return long Duration in days
      */
     public long getCountdown(){

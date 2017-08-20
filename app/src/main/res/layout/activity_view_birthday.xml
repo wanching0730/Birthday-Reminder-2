@@ -56,7 +56,9 @@
 
             <LinearLayout
                 style="@style/CommonLayoutWidthHeight"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="5sp">
 
                 <TextView
                     android:id="@+id/day"
