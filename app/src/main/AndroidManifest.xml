@@ -49,7 +49,7 @@
             android:label="@string/title_activity_today_birthday"></activity>
         <activity
             android:name=".Activities.ShowPiechartActivity"
-            android:label="@string/title_display_piechart"></activity>
+            android:label="@string/title_activity_display_piechart"></activity>
     </application>
 
 </manifest>
