@@ -61,6 +61,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_birthday);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         sharedPreferences = getSharedPreferences("spSaveState", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();

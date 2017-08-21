@@ -54,7 +54,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_birthday);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
@@ -62,12 +62,12 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
 
         bitmap = person.getImage();
 
-        etName = (EditText) findViewById(R.id.add_name);
-        etEmail = (EditText) findViewById(R.id.add_email);
-        etPhone = (EditText) findViewById(R.id.add_phone);
-        etDate = (EditText) findViewById(R.id.date_selection);
-        ivImage = (ImageView) findViewById(R.id.person_image);
-        swNotification = (Switch) findViewById(R.id.notification);
+        etName = findViewById(R.id.add_name);
+        etEmail = findViewById(R.id.add_email);
+        etPhone = findViewById(R.id.add_phone);
+        etDate = findViewById(R.id.date_selection);
+        ivImage = findViewById(R.id.person_image);
+        swNotification = findViewById(R.id.notification);
 
         etName.setText(person.getName());
         etEmail.setText(person.getEmail());

@@ -69,11 +69,11 @@ public class ViewBirthdayActivity extends AppCompatActivity {
 
             setTitle(getResources().getString(R.string.birthday_wish) + " to " + person.getName());
 
-            TextView tvEmail = (TextView) findViewById(R.id.show_email);
-            TextView tvPhone = (TextView) findViewById(R.id.show_phone);
-            TextView tvDate = (TextView) findViewById(R.id.date);
-            TextView tvLeft = (TextView) findViewById(R.id.left);
-            Switch swNotification = (Switch) findViewById(R.id.view_switch);
+            TextView tvEmail = findViewById(R.id.show_email);
+            TextView tvPhone = findViewById(R.id.show_phone);
+            TextView tvDate = findViewById(R.id.date);
+            TextView tvLeft = findViewById(R.id.left);
+            Switch swNotification = findViewById(R.id.view_switch);
 
             tvEmail.setText("Email: " + person.getEmail());
             tvPhone.setText("Phone: " + person.getPhone());

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wanching.birthdayreminder">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -35,21 +36,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Activities.UpdateBirthdayActivity"
             android:label="@string/title_activity_update_birthday"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.ViewBirthdayActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".Activities.ViewBirthdayActivity"
+            android:parentActivityName=".Activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.MainActivity">
+            </meta-data>
+        </activity>
+
         <activity
             android:name=".Activities.AddBirthdayActivity"
             android:label="@string/title_activity_add_birthday"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.MainActivity">
+            </meta-data>
+        </activity>
+
         <activity
             android:name=".Activities.TodayBirthdayActivity"
             android:label="@string/title_activity_today_birthday"></activity>
+
         <activity
             android:name=".Activities.ShowPiechartActivity"
             android:label="@string/title_activity_display_piechart"></activity>
+
     </application>
 
 </manifest>
