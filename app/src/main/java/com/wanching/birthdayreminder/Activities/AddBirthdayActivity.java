@@ -66,12 +66,12 @@ public class AddBirthdayActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("spSaveState", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        etName = (EditText) findViewById(R.id.add_name);
-        etEmail = (EditText) findViewById(R.id.add_email);
-        etPhone = (EditText) findViewById(R.id.add_phone);
-        ivImage = (ImageView) findViewById(R.id.person_image);
-        etDate = (EditText) findViewById(R.id.date_selection);
-        swNotification = (Switch) findViewById(R.id.notification);
+        etName = findViewById(R.id.add_name);
+        etEmail = findViewById(R.id.add_email);
+        etPhone = findViewById(R.id.add_phone);
+        ivImage = findViewById(R.id.person_image);
+        etDate = findViewById(R.id.date_selection);
+        swNotification = findViewById(R.id.notification);
 
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +83,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
+        FloatingActionButton fabAdd = findViewById(R.id.fab_add);
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +102,7 @@ public class AddBirthdayActivity extends AppCompatActivity {
                         String date = etDate.getText().toString();
                         Boolean notification = swNotification.isChecked();
 
-                        // Check whether all information are filled up completely
+                        // Check whether all details are filled up completely
                         if (name.matches("") || email.matches("") || phone.matches("")) {
                             Toast.makeText(AddBirthdayActivity.this, "Please enter all details to proceed", Toast.LENGTH_SHORT).show();
                         } else {

@@ -88,7 +88,7 @@ public class UpdateBirthdayActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fabSave = (FloatingActionButton) findViewById(R.id.fab_save);
+        FloatingActionButton fabSave = findViewById(R.id.fab_save);
         fabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
