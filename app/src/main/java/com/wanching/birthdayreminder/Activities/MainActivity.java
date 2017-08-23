@@ -3,6 +3,7 @@ package com.wanching.birthdayreminder.Activities;
 import android.app.AlarmManager;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     private TabLayout tabLayout;
     private SimpleFragmentPagerAdapter adapter;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,11 +175,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader onCreateLoader(int i, Bundle bundle) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Progressing");
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
         return new BackupDataTask(MainActivity.this);
     }
 
     @Override
     public void onLoadFinished(Loader<JSONObject> loader, JSONObject response) {
+        progressDialog.dismiss();
         View parentLayout = findViewById(android.R.id.content);
         Snackbar.make(parentLayout, outputMessage(response), Snackbar.LENGTH_LONG).show();
         Log.v("data synced", response.toString());
