@@ -93,46 +93,46 @@ public class UpcomingBirthdayFragment extends Fragment {
         listener.setCount(cursor.getCount());
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_upcoming_birthday, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_delete_all) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setCancelable(false)
-                    .setMessage(getString(R.string.dialog_message))
-                    .setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
-                            Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
-                            dbq.deleteAll();
-                            adapter.swapCursor(cursor);
-                            cursor.close();
-                            Toast.makeText(getContext(), getString(R.string.task_deleted_all), Toast.LENGTH_SHORT).show();
-                            onResume();
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getContext(), getString(R.string.task_cancelled), Toast.LENGTH_SHORT).show();
-                            dialogInterface.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.setTitle(getString(R.string.dialog_title));
-            alert.show();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.menu_upcoming_birthday, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_delete_all) {
+//            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//            builder.setCancelable(false)
+//                    .setMessage(getString(R.string.dialog_message))
+//                    .setPositiveButton(getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            BirthdayDbQueries dbq = new BirthdayDbQueries(new BirthdayDbHelper(getContext()));
+//                            Cursor cursor = dbq.read(DbColumns.columns, null, null, null, null, BirthdayContract.BirthdayEntry.COLUMN_NAME_NAME + " ASC");
+//                            dbq.deleteAll();
+//                            adapter.swapCursor(cursor);
+//                            cursor.close();
+//                            Toast.makeText(getContext(), getString(R.string.task_deleted_all), Toast.LENGTH_SHORT).show();
+//                            onResume();
+//                        }
+//                    })
+//                    .setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//                            Toast.makeText(getContext(), getString(R.string.task_cancelled), Toast.LENGTH_SHORT).show();
+//                            dialogInterface.cancel();
+//                        }
+//                    });
+//            AlertDialog alert = builder.create();
+//            alert.setTitle(getString(R.string.dialog_title));
+//            alert.show();
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public interface OnSetCountListener {
         void setCount(int count);

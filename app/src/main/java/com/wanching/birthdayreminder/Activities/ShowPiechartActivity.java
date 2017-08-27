@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -130,43 +131,48 @@ public class ShowPiechartActivity extends AppCompatActivity {
      * Display Pie Chart
      * which display the values in percentage format
      */
-    private void setupChart(){
+    private void setupChart() {
 
         float today = getToday();
         float tomorrow = getTomorrow();
         float dayAfterTomorrow = getDayAfterTomorrow();
         float total = (float) dbq.retrieveUpcomingBirthday().getCount();
 
-        float upcomingBirthday[] = {today/total*100f, tomorrow/total*100f, dayAfterTomorrow/total*100f};
-        String days[] = {"Today", "Tomorrow", "Day after tomorrow"};
+        if (today == 0f && tomorrow == 0f && dayAfterTomorrow == 0f) {
+            Toast.makeText(this, "No statistic found for upcoming birthday record", Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            float upcomingBirthday[] = {today / total * 100f, tomorrow / total * 100f, dayAfterTomorrow / total * 100f};
+            String days[] = {"Today", "Tomorrow", "Day after tomorrow"};
 
-        List<PieEntry> pieEntryList = new ArrayList<>();
+            List<PieEntry> pieEntryList = new ArrayList<>();
 
-        for(int i = 0; i < upcomingBirthday.length; i++)
-            if(upcomingBirthday[i] != 0f)
-                pieEntryList.add(new PieEntry(upcomingBirthday[i], days[i]));
+            for (int i = 0; i < upcomingBirthday.length; i++)
+                if (upcomingBirthday[i] != 0f)
+                    pieEntryList.add(new PieEntry(upcomingBirthday[i], days[i]));
 
-        PieDataSet dataSet = new PieDataSet(pieEntryList, "");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
+            PieDataSet dataSet = new PieDataSet(pieEntryList, "");
+            dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            dataSet.setSliceSpace(3f);
+            dataSet.setSelectionShift(5f);
 
-        PieData data = new PieData(dataSet);
-        data.setValueTextSize(20f);
-        data.setValueFormatter(new PercentFormatter());
+            PieData data = new PieData(dataSet);
+            data.setValueTextSize(20f);
+            data.setValueFormatter(new PercentFormatter());
 
-        PieChart chart = findViewById(R.id.chart);
-        chart.setData(data);
-        chart.setEntryLabelTextSize(30f);
-        chart.setDrawSliceText(false);
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
-        chart.setHoleRadius(58f);
-        chart.setHoleColor(Color.parseColor("#c6e2ff"));
-        chart.setTransparentCircleRadius(61f);
-        chart.setRotationAngle(90);
-        chart.setRotationEnabled(true);
-        chart.setHighlightPerTapEnabled(true);
-        chart.invalidate();
+            PieChart chart = findViewById(R.id.chart);
+            chart.setData(data);
+            chart.setEntryLabelTextSize(30f);
+            chart.setDrawSliceText(false);
+            chart.setTransparentCircleColor(Color.WHITE);
+            chart.setTransparentCircleAlpha(110);
+            chart.setHoleRadius(58f);
+            chart.setHoleColor(Color.parseColor("#c6e2ff"));
+            chart.setTransparentCircleRadius(61f);
+            chart.setRotationAngle(90);
+            chart.setRotationEnabled(true);
+            chart.setHighlightPerTapEnabled(true);
+            chart.invalidate();
+        }
     }
 }
